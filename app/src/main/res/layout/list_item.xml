@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/item_shape">
+
+    <ImageView
+        android:id="@+id/hall_image"
+        android:src="@drawable/hall"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tx_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="قاعة ليالي العمر"
+                android:textStyle="bold"
+
+                android:layout_alignParentRight="true"
+                android:textColor="@color/black"
+                
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:id="@+id/layout_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tx_name"
+                android:layout_alignParentRight="true">
+                <TextView
+                    android:id="@+id/unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="جنيه"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="5dp"/>
+                <TextView
+                android:id="@+id/tx_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="2000"
+                android:textColor="@color/black"
+                />
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tx_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_price"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/address"
+                tools:text="شارع المحطة، بجوار فندق رمسيس"/>
+
+
+
+        </RelativeLayout>
+
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
