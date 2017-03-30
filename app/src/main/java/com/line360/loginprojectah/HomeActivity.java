@@ -30,7 +30,7 @@ import com.bumptech.glide.Glide;
 import com.line360.loginprojectah.helper.DateSharedPref;
 import com.line360.loginprojectah.helper.SQLiteHandler;
 import com.line360.loginprojectah.helper.SessionManager;
-
+import com.line360.loginprojectah.helper.SQLiteHandler;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -69,10 +69,14 @@ public class HomeActivity extends MainActivity {
         }
 
         // Fetching user details from sqlite
+
         HashMap<String, String> user = db.getUserDetails();
 
         String name = user.get("name");
-        String email = user.get("email");
+
+
+
+
 
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -107,7 +111,7 @@ public class HomeActivity extends MainActivity {
                 switch (menuItem.getItemId())
                 {
                     case R.id.nav_item_logout:
-
+                        dateSharedpref.SaveData(null);
                         logoutUser();
                         break;
 
@@ -181,15 +185,26 @@ public class HomeActivity extends MainActivity {
         day = c.get(Calendar.DAY_OF_MONTH);
 
         // set current date into textview
-        tvDisplayDate.setText(new StringBuilder()
-                // Month is 0 based, just add 1
-                .append(day).append("-").append(month + 1).append("-")
-                .append(year).append(" "));
+
+
+
+
+
 
         String date = dateSharedpref.LoadData();
+
+
         if (date != "nodate") {
             countDownStart(date.toString());
             btnChangeDate.setText("تغيير الموعد");
+            tvDisplayDate.setText(date);
+        }
+
+        else {
+            tvDisplayDate.setText(new StringBuilder()
+                    // Month is 0 based, just add 1
+                    .append(day).append("-").append(month + 1).append("-")
+                    .append(year).append(" "));
         }
 
 
