@@ -120,16 +120,7 @@ public class HomeActivity extends MainActivity {
 
                         Toast.makeText(HomeActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
-                    case R.id.navigation_item_images:
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        Toast.makeText(HomeActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        break;
-                    case R.id.navigation_item_location:
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        Toast.makeText(HomeActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        break;
+
 
                 }
 
