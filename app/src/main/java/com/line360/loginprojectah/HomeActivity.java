@@ -28,9 +28,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.line360.loginprojectah.helper.DateSharedPref;
+import com.line360.loginprojectah.helper.SQLiteHandler;
+import com.line360.loginprojectah.helper.SessionManager;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 
 public class HomeActivity extends MainActivity {
@@ -39,12 +42,14 @@ public class HomeActivity extends MainActivity {
     private Handler handler;
     private Runnable runnable;
     private TextView tvDisplayDate;
+    private TextView tvDisplayName;
     private Button btnChangeDate;
     private DrawerLayout mDrawerLayout;
     private int year;
     private int month;
     private int day;
-
+    private SQLiteHandler db;
+    private SessionManager session;
     static final int DATE_DIALOG_ID = 999;
 
 
@@ -53,7 +58,21 @@ public class HomeActivity extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // SqLite database handler
+        db = new SQLiteHandler(getApplicationContext());
 
+        // session manager
+        session = new SessionManager(getApplicationContext());
+
+        if (!session.isLoggedIn()) {
+            logoutUser();
+        }
+
+        // Fetching user details from sqlite
+        HashMap<String, String> user = db.getUserDetails();
+
+        String name = user.get("name");
+        String email = user.get("email");
 
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -72,6 +91,9 @@ public class HomeActivity extends MainActivity {
         txtTimerHour = (TextView) findViewById(R.id.tx_hours);
         txtTimerMinute = (TextView) findViewById(R.id.tx_minutes);
         txtTimerSecond = (TextView) findViewById(R.id.tx_seconds);
+        tvDisplayName = (TextView) findViewById(R.id.tx_desplay_name);
+
+        tvDisplayName.setText(name);
 
         addListenerOnButton();
         setCurrentDateOnView();

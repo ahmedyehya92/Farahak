@@ -10,7 +10,7 @@
     <string name="welcome">Welcome</string>
     <string name="btn_logout">LOGOUT</string>
     <string name="name">Fullname</string>
-    <string name="nav_item_attachment">Smartphones</string>
+    <string name="nav_item_attachment">تصفح القاعات</string>
     <string name="nav_item_images">clothes</string>
     <string name="nav_item_location">Accessories</string>
     <string name="nav_sub_menu">SubMenu</string>
