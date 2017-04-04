@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity  {
                 Intent i = new Intent(getApplicationContext(),
                         SearchActivity.class);
                 startActivity(i);
+                finish();
 
             }
         });
