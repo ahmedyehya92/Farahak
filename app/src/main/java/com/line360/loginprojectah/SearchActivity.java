@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     private SearchView mSearchView;
     private ListView mListView;
     private final ArrayList<String> citys = new ArrayList<String>();
-
+    private TextView citytx;
 
     private final String[] mStrings = {"أسيوط","سوهاج","المنيا","أسيوط","سوهاج","أسيوط","سوهاج","أسيوط","سوهاج","أسيوط","سوهاج","أسيوط","سوهاج","أسيوط","سوهاج",};
 
@@ -57,19 +58,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                 android.R.layout.simple_list_item_1,
                 citys));
         mListView.setTextFilterEnabled(true);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            String city = citys.get(position);
-                final String city_key = "citykey";
-                String cityIntent = city;
-                Intent myIntent = new Intent(view.getContext(), MainActivity.class);
-                myIntent.putExtra(city_key,cityIntent);
-                startActivityForResult(myIntent, 0);
-                finish();
 
-            }
-        });
         setupSearchView();
     }
 
@@ -82,6 +71,21 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
 
     public boolean onQueryTextChange(String newText) {
         mListView.setVisibility(View.VISIBLE);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                citytx = (TextView) findViewById(android.R.id.text1);
+                String city = citytx.getText().toString();
+                final String city_key = "citykey";
+                String cityIntent = city;
+                Intent myIntent = new Intent(view.getContext(), MainActivity.class);
+                myIntent.putExtra(city_key,cityIntent);
+                startActivityForResult(myIntent, 0);
+                finish();
+
+            }
+        });
         if (TextUtils.isEmpty(newText)) {
             mListView.clearTextFilter();
         } else {

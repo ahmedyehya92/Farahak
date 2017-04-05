@@ -1,6 +1,9 @@
 package com.line360.loginprojectah;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -22,11 +25,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +72,10 @@ public class MainActivity extends AppCompatActivity  {
     Activity context;
     AsyncTextTask asyncTextTask;
     RelativeLayout searchbox;
+    LinearLayout snacBar1;
+    LinearLayout loadLayout;
+    String url1;
+    ProgressBar mprogressBar;
 
 
     @Override
@@ -78,6 +87,7 @@ public class MainActivity extends AppCompatActivity  {
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         ab.setDisplayHomeAsUpEnabled(true);
+
         /* new AsyncTextTask().execute(url2);
         new AsyncTextTask().execute(url3);
         new AsyncTextTask().execute(url4);
@@ -87,14 +97,73 @@ public class MainActivity extends AppCompatActivity  {
         context = this;
         mHalls = new ArrayList<Hall>();
         ListView listview = (ListView) findViewById(R.id.list);
+        loadLayout = (LinearLayout) findViewById(R.id.load_layout);
+        loadLayout.setVisibility(View.VISIBLE);
+        mprogressBar = (ProgressBar) findViewById(R.id.progBar);
+        if (mprogressBar != null) {
+            mprogressBar.setIndeterminate(true);
+            mprogressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
         searchbox = (RelativeLayout) findViewById(R.id.search_box);
+        snacBar1 = (LinearLayout) findViewById(R.id.snack_bar1);
+        snacBar1.setVisibility(View.GONE);
         Adapter = new HallAdapter(getApplicationContext(), mHalls);       // انتبه انت عندك هنا constructor مختلف
 
         listview.setAdapter(Adapter);
         mHalls.clear();
 
+        final String city_key = "citykey";
 
 
+
+        if ((mHalls.size()==MhallsSize.getmArraylistSize())&& MhallsSize.getmArraylistSize()!=0)
+        {}
+        else {
+            boolean result = isNetworkStatePermissionGranted();
+            if(isNetworkAvailable(this))
+            {
+                Intent cityintent = getIntent();
+                String city = cityintent.getStringExtra(city_key);
+
+               if (city != null) {
+
+                    switch (city) {
+                        case "":
+                            break;
+                        case "اسيوط":
+                            url1 = "https://telegraphic-miscond.000webhostapp.com/Farahak/getassuthalls.php";
+
+                            asyncTextTask = new AsyncTextTask();
+                            asyncTextTask.execute(url1);
+                            break;
+                        case "سوهاج":
+                            url1 = "https://telegraphic-miscond.000webhostapp.com/Farahak/getsohaghalls.php";
+
+                            asyncTextTask = new AsyncTextTask();
+                            asyncTextTask.execute(url1);
+                            break;
+
+                    }
+
+
+                }
+
+
+            /*    url1 = "https://telegraphic-miscond.000webhostapp.com/Farahak/getassuthalls.php";
+
+                asyncTextTask = new AsyncTextTask();
+                asyncTextTask.execute(url1); */
+            }
+            else {
+               // Toast.makeText(MainActivity.this,"خطأ في الإتصال حاول مرة أخرى",Toast.LENGTH_SHORT).show();
+                loadLayout.setVisibility(View.GONE);
+                snacBar1.setVisibility(View.VISIBLE);
+            }
+
+
+
+
+        }
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -248,36 +317,62 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onStart() {
 
-        if ((mHalls.size()==MhallsSize.getmArraylistSize())&& MhallsSize.getmArraylistSize()!=0)
+   /*     if ((mHalls.size()==MhallsSize.getmArraylistSize())&& MhallsSize.getmArraylistSize()!=0)
         {}
         else {
                boolean result = isNetworkStatePermissionGranted();
             if(isNetworkAvailable(this))
             {
-                String url1 = "https://telegraphic-miscond.000webhostapp.com/Farahak/getassuthalls.php";
+                final String city_key = "citykey";
+                Intent cityintent = getIntent();
+                String city = cityintent.getStringExtra(city_key).toString();
+                switch (city)
+                {
+                    case "":
+                        break;
+                    case "اسيوط":
+                        url1 = "https://telegraphic-miscond.000webhostapp.com/Farahak/getassuthalls.php";
+
+                        asyncTextTask = new AsyncTextTask();
+                        asyncTextTask.execute(url1);
+                        break;
+                    case "سوهاج":
+                        url1 = "https://telegraphic-miscond.000webhostapp.com/Farahak/getsohaghalls.php";
+
+                        asyncTextTask = new AsyncTextTask();
+                        asyncTextTask.execute(url1);
+                        break;
+
+                }
+
+
+
+
+
+              url1 = "https://telegraphic-miscond.000webhostapp.com/Farahak/getassuthalls.php";
 
                 asyncTextTask = new AsyncTextTask();
                 asyncTextTask.execute(url1);
             }
             else {
                 Toast.makeText(MainActivity.this,"خطأ في الإتصال حاول مرة أخرى",Toast.LENGTH_SHORT).show();
-            }
+            } */
 
 
 
 
-        }
+
 
         super.onStart();
     }
 
 
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.drawer, menu);
         return true;
-    }
+    }*/
 
 
 
@@ -419,6 +514,8 @@ public class MainActivity extends AppCompatActivity  {
 
 
                 Log.d("temp", mHalls.toString());
+                loadLayout.setVisibility(View.GONE);
+
 
             } catch (Exception ex) {
 
@@ -429,7 +526,6 @@ public class MainActivity extends AppCompatActivity  {
         }
 
         protected void onPostExecute(String result2) {
-
 
         }
     }

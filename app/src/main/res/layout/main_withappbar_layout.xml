@@ -37,6 +37,7 @@
         android:layout_height="50dp"
         android:layout_margin="7dp"
         android:background="@color/white"
+
         >
         <ImageView
             android:id="@+id/search_icon"
@@ -70,5 +71,34 @@
         tools:context="com.line360.loginprojectah.MainActivity">
 
     </ListView>
+    <LinearLayout
+        android:id="@+id/snack_bar1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/snackBar"
+        android:gravity="center">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="اتصال الإنترنت غير متوفر"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/load_layout"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/listView_background"
+        android:gravity="center"
+        android:visibility="visible">
+        <ProgressBar
+            android:id="@+id/progBar"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+    </LinearLayout>
 </RelativeLayout>
