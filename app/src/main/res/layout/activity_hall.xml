@@ -86,14 +86,24 @@
                 android:layout_below="@id/layout_price"
                 android:textColor="@color/address"
                 android:text="شارع المحطة، بجوار فندق رمسيس"/>
+
+    <TextView
+        android:layout_below="@id/tx_address_hall"
+        android:layout_toLeftOf="@id/small_image"
+        android:id="@+id/tx_see"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"/>
 </RelativeLayout>
 
            <LinearLayout
+               android:id="@+id/description"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:layout_marginRight="15dp"
                android:layout_marginLeft="15dp"
-               android:layout_marginTop="80dp">
+               android:layout_marginTop="80dp"
+               android:orientation="vertical">
 
                <com.ms.square.android.expandabletextview.ExpandableTextView
                    xmlns:android="http://schemas.android.com/apk/res/android"
@@ -119,7 +129,12 @@
                        android:layout_gravity="right|bottom"
                        android:background="@android:color/transparent"/>
                </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+
            </LinearLayout>
+
+
+
         </RelativeLayout>
 
 
@@ -127,6 +142,22 @@
 
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/load_layout_hall"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/listView_background"
+        android:gravity="center"
+
+        android:visibility="visible">
+        <ProgressBar
+            android:id="@+id/progBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
+    </LinearLayout>
     <android.support.design.widget.BottomNavigationView
 
         android:id="@+id/bottom_navigation"
@@ -137,4 +168,6 @@
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
         app:menu="@menu/bottombar_menu" />
+
+
 </RelativeLayout>

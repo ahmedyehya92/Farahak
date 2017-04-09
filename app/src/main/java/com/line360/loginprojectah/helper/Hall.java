@@ -5,7 +5,7 @@ package com.line360.loginprojectah.helper;
  */
 
 public class Hall {
-    private int mId;
+    private Integer mId;
     private String mName;
     private Integer mPrice;
     private String mPhone;
@@ -34,7 +34,7 @@ public class Hall {
         mAddress = address;
     }
 
-    public int getmId() {return mId;}
+    public String getmId() {return mId.toString();}
     public String getmName() {return mName;}
     public String getmPrice() {return mPrice.toString();}
     public String getmPhone() {return mPhone;}

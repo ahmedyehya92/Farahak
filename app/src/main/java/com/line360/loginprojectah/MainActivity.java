@@ -42,15 +42,30 @@ import com.line360.loginprojectah.helper.SessionManager;
 import com.line360.loginprojectah.helper.Hall;
 import com.line360.loginprojectah.helper.HallAdapter;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +134,7 @@ public class MainActivity extends AppCompatActivity  {
         if ((mHalls.size()==MhallsSize.getmArraylistSize())&& MhallsSize.getmArraylistSize()!=0)
         {}
         else {
-            boolean result = isNetworkStatePermissionGranted();
+         boolean result = isNetworkStatePermissionGranted();
             if(isNetworkAvailable(this))
             {
                 Intent cityintent = getIntent();
@@ -131,7 +146,7 @@ public class MainActivity extends AppCompatActivity  {
                         case "":
                             break;
                         case "اسيوط":
-                            url1 = "https://telegraphic-miscond.000webhostapp.com/Farahak/getassuthalls.php";
+                            url1 = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/halls";
 
                             asyncTextTask = new AsyncTextTask();
                             asyncTextTask.execute(url1);
@@ -153,8 +168,8 @@ public class MainActivity extends AppCompatActivity  {
 
                 asyncTextTask = new AsyncTextTask();
                 asyncTextTask.execute(url1); */
-            }
-            else {
+           }
+          else {
                // Toast.makeText(MainActivity.this,"خطأ في الإتصال حاول مرة أخرى",Toast.LENGTH_SHORT).show();
                 loadLayout.setVisibility(View.GONE);
                 snacBar1.setVisibility(View.VISIBLE);
@@ -168,6 +183,7 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Hall hall = mHalls.get(position);
+                final String id_key = "idKey";
                 final String facebook_key = "fkey";
                 final String phone_key = "phonekey";
                 final String image1_key = "image1key";
@@ -177,6 +193,7 @@ public class MainActivity extends AppCompatActivity  {
                 final String name_key = "namekey";
                 final String price_key = "pricekey";
                 final String address_key = "addresskey";
+                String idHall = hall.getmId();
                 String name = hall.getmName();
                 String price = hall.getmPrice();
                 String address = hall.getmAddress();
@@ -187,6 +204,7 @@ public class MainActivity extends AppCompatActivity  {
                 String phone = hall.getmPhone();
                 String preparing = hall.getmPreparing();
                 Intent myIntent = new Intent(view.getContext(), HallActivity.class);
+                myIntent.putExtra(id_key,idHall);
                 myIntent.putExtra(image1_key,image1);
                 myIntent.putExtra(image2_key,image2);
                 myIntent.putExtra(image3_key,image3);
@@ -434,15 +452,59 @@ public class MainActivity extends AppCompatActivity  {
                 URL url = new URL(params[0]);
                 //make connect with url and send request
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+
+
+
+
+
+                urlConnection.setReadTimeout(10000);
+                urlConnection.setConnectTimeout(40000);
+
+
+
+
+
+
+
+
                 //waiting for 7000ms for response
-                urlConnection.setConnectTimeout(40000);//set timeout to 5 seconds
+           //     urlConnection.setConnectTimeout(40000);//set timeout to 5 seconds
 
                 try {
-                    urlConnection.equals(null);
+              //      urlConnection.equals(null);
+
+
+                    urlConnection.setRequestMethod("POST");
+                  urlConnection.addRequestProperty("Authorization", "685ee9b60db18b3d61803ee6818105e5");
+
+                    urlConnection.setDoInput(true);
+                    urlConnection.setDoOutput(true);
+
+                    List<NameValuePair> parames = new ArrayList<NameValuePair>();
+                    parames.add(new BasicNameValuePair("city", "assut"));
+
+
+                    OutputStream os = urlConnection.getOutputStream();
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(os, "UTF-8"));
+                    writer.write(getQuery(parames));
+                    writer.flush();
+                    writer.close();
+                    os.close();
+
+
+
                     //getting the response data
                     InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                     //convert the stream to string
                     NewsData = ConvertInputToStringNoChange(in);
+
+
+
+
+
+
                     //send to display data
                     publishProgress(NewsData);
                     urlConnection.disconnect();
@@ -467,12 +529,24 @@ public class MainActivity extends AppCompatActivity  {
 
             try {
                 //display response data
-                JSONArray jsonArray = new JSONArray(progress[0]);
+                JSONObject jsonObject = new JSONObject(progress[0]);
+             //   JSONObject error = jsonObject.getJSONObject("error");
+                Boolean error = jsonObject.getBoolean("error");
+                JSONArray jsonArray = jsonObject.getJSONArray("halls");
                 for (int i=0;i<jsonArray.length();i++) {
                     JSONObject hall = jsonArray.getJSONObject(i);
                     mHalls.add(i,new Hall(hall.getInt("id"),hall.getString("name"),hall.getInt("price"),hall.getString("phone"),hall.getString("facebook"),hall.getString("instagram"),hall.getString("twitter"),hall.getString("preparing"),hall.getString("image1"),hall.getString("image2"),hall.getString("image3"),hall.getString("address")));
 
                 }
+
+
+
+         /*       JSONArray jsonArray = new JSONArray(progress[0]);
+                for (int i=0;i<jsonArray.length();i++) {
+                    JSONObject hall = jsonArray.getJSONObject(i);
+                    mHalls.add(i,new Hall(hall.getInt("id"),hall.getString("name"),hall.getInt("price"),hall.getString("phone"),hall.getString("facebook"),hall.getString("instagram"),hall.getString("twitter"),hall.getString("preparing"),hall.getString("image1"),hall.getString("image2"),hall.getString("image3"),hall.getString("address")));
+
+                } */
 
 
                 MhallsSize.setmArraylistSize(mHalls.size());
@@ -517,7 +591,8 @@ public class MainActivity extends AppCompatActivity  {
                 loadLayout.setVisibility(View.GONE);
 
 
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
 
 
             }
@@ -527,6 +602,28 @@ public class MainActivity extends AppCompatActivity  {
 
         protected void onPostExecute(String result2) {
 
+        }
+
+
+
+        private String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException
+        {
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+
+            for (NameValuePair pair : params)
+            {
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(pair.getName(), "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
+            }
+
+            return result.toString();
         }
     }
 

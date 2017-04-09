@@ -124,7 +124,7 @@ public class LoginActivity extends Activity {
                         session.setLogin(true);
 
                         // Now store the user in SQLite
-                        String uid = jObj.getString("uid");
+                        String uid = jObj.getString("apiKey");
 
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
