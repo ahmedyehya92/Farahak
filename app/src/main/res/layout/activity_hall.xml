@@ -1,106 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_hall"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.line360.loginprojectah.HallActivity">
+    android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/recycler_view"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:layout_alignParentTop="true"/>
+        android:layout_height="300dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <ScrollView
-        android:id="@+id/scrollview"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:scrollbars="none" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_hall"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="56dp"
-        android:layout_below="@id/recycler_view"
-        >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/title">
-    <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/hall"
-                android:id="@+id/small_image"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="15dp"
-                android:layout_centerVertical="true"/>
-            <TextView
-                android:id="@+id/tx_name_hall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
-                android:text="قاعة ليالي العمر"
-                android:textStyle="bold"
-                android:layout_toLeftOf="@id/small_image"
-
-
-                android:textColor="@color/black"
-
-                />
-
-            <LinearLayout
-                android:id="@+id/layout_price"
+            <RelativeLayout
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tx_name_hall"
-                android:layout_toLeftOf="@id/small_image"
-                >
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/small_image"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/hall" />
+
                 <TextView
-                    android:id="@+id/unit"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tx_name_hall"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="جنيه"
+
+                    android:layout_toLeftOf="@id/small_image"
+                    android:text="قاعة ليالي العمر"
                     android:textColor="@color/black"
-                    android:layout_marginRight="5dp"/>
-                <TextView
-                    android:id="@+id/tx_price_hall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2000"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/black"
+
+
+                    android:textStyle="bold"
+
                     />
 
-            </LinearLayout>
-            <TextView
-                android:id="@+id/tx_address_hall"
-                android:layout_toLeftOf="@id/small_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/layout_price"
-                android:textColor="@color/address"
-                android:text="شارع المحطة، بجوار فندق رمسيس"/>
+                <LinearLayout
+                    android:id="@+id/layout_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tx_name_hall"
+                    android:layout_toLeftOf="@id/small_image">
 
-    <TextView
-        android:layout_below="@id/tx_address_hall"
-        android:layout_toLeftOf="@id/small_image"
-        android:id="@+id/tx_see"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1"/>
-</RelativeLayout>
+                    <TextView
+                        android:id="@+id/unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="جنيه"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tx_price_hall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="2000"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tx_address_hall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/layout_price"
+                    android:layout_toLeftOf="@id/small_image"
+                    android:text="شارع المحطة، بجوار فندق رمسيس"
+                    android:textColor="@color/address" />
+
+                <TextView
+                    android:id="@+id/tx_see"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tx_address_hall"
+                    android:layout_toLeftOf="@id/small_image"
+                    android:text="1" />
+            </RelativeLayout>
 
             <android.support.v7.widget.CardView
-                android:layout_below="@+id/title"
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin">
+                android:layout_below="@+id/title"
+                android:layout_marginBottom="@dimen/card_margin"
+
+                android:layout_marginTop="@dimen/card_margin">
 
                 <LinearLayout
                     style="@style/Widget.CardContent"
@@ -114,44 +151,71 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 
-                    <com.ms.square.android.expandabletextview.ExpandableTextView
-                        xmlns:android="http://schemas.android.com/apk/res/android"
+                    <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/expand_text_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        expandableTextView:maxCollapsedLines="4"
-                        expandableTextView:animDuration="200">
+                        expandableTextView:animDuration="200"
+                        expandableTextView:maxCollapsedLines="4">
+
                         <TextView
                             android:id="@id/expandable_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:textSize="16sp"
-                            android:textColor="#666666" />
+                            android:textColor="#666666"
+                            android:textSize="16sp" />
+
                         <ImageButton
                             android:id="@id/expand_collapse"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
                             android:layout_gravity="right|bottom"
+                            android:background="@android:color/transparent"
 
-                            android:background="@android:color/transparent"/>
+                            android:padding="16dp" />
                     </com.ms.square.android.expandabletextview.ExpandableTextView>
 
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
 
+            <TextView
+                android:id="@+id/comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/description"
+                android:layout_marginRight="20dp"
+                android:text="التعليقات"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/black" />
+
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/comments_recycler_view"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/comments"
+                android:layout_marginBottom="?attr/actionBarSize"
+                android:scrollbars="none" />
+
 
         </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 
+    <android.support.design.widget.BottomNavigationView
 
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/bottombar_menu" />
 
-
-
-    </ScrollView>
 
     <LinearLayout
         android:id="@+id/load_layout_hall"
@@ -161,6 +225,7 @@
         android:gravity="center"
 
         android:visibility="gone">
+
         <ProgressBar
             android:id="@+id/progBar"
             android:layout_width="wrap_content"
@@ -168,16 +233,5 @@
 
             />
     </LinearLayout>
-    <android.support.design.widget.BottomNavigationView
 
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:itemBackground="@color/colorPrimary"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
-        app:menu="@menu/bottombar_menu" />
-
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

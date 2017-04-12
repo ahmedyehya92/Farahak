@@ -42,7 +42,8 @@
             android:theme="@style/Base.Theme.DesignDemo"/>
         <activity
             android:name=".HallActivity"
-            android:exported="true" />
+            android:theme="@style/Base.Theme.DesignDemo"
+            android:label=""/>
         <activity android:name=".SearchActivity" />
         <activity android:name=".HomeActivity"
                    android:theme="@style/Base.Theme.DesignDemo"

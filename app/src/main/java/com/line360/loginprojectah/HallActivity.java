@@ -10,12 +10,17 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,10 +31,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.line360.loginprojectah.helper.Comment_Model;
 import com.line360.loginprojectah.helper.Hall;
 import com.line360.loginprojectah.helper.ImageItem;
 import com.line360.loginprojectah.helper.MhallsSize;
 import com.line360.loginprojectah.helper.RecyclerView_Adapter;
+import com.line360.loginprojectah.helper.Comment_RecyclerView_Adapter;
+
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
 
@@ -53,10 +61,13 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HallActivity extends Activity {
+public class HallActivity extends AppCompatActivity {
     private static String TAG;
     private static RecyclerView recyclerView;
-    public static final String[] IMAGES = {"http://i.imgur.com/beABPPk.jpg","http://i.imgur.com/ShDTxcW.jpg","http://i.imgur.com/mK0x1jn.jpg","http://i.imgur.com/ITT17YQ.jpg","http://i.imgur.com/PqeyuxT.jpg","http://i.imgur.com/Gk754wS.jpg"};
+    private static RecyclerView commentRecyclerView;
+    public static final String[] USERNAME_COMMENT = {"Ahmed","Aymen","Rami","Ali"};
+    public static final String[] DATE_COMMENT = {"12/5/2016","13/4/2017","10/2/2017","11/1/2017"};
+    public static final String[] COMMENT = {"قاعة جميلة وأسعارهم مناسبة والخدمة فوق الممتاز","قاعة فخمة والخدمة جيدة","ممتازة","قاعة متميزة جدا وتصميمها هايل أنحكم بيها"};
     ImageView smallImage;
     public static TextView nameHall,priceHall,addressHall, hallSee;
     public static ExpandableTextView preparingTx;
@@ -77,6 +88,18 @@ public class HallActivity extends Activity {
             mprogressBar.setIndeterminate(true);
             mprogressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_hall);
+        setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        ab.setDisplayHomeAsUpEnabled(true);
+
+
+
+        initCollapsingToolbar();
+
+
         smallImage = (ImageView) findViewById(R.id.small_image);
         nameHall = (TextView) findViewById(R.id.tx_name_hall);
         hallSee = (TextView) findViewById(R.id.tx_see);
@@ -86,6 +109,8 @@ public class HallActivity extends Activity {
 
         initViews();
         populatRecyclerView();
+        initCommentViews();
+        commentPopulatRecyclerView();
         // sample code snippet to set the text content on the ExpandableTextView
 
 
@@ -178,6 +203,25 @@ public class HallActivity extends Activity {
         asyncHallTask.execute(url1);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch (id) {
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+
+
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     public  boolean isPhoneCallPermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.CALL_PHONE)
@@ -208,6 +252,14 @@ public class HallActivity extends Activity {
 
     }
 
+    private void initCommentViews() {
+        commentRecyclerView = (RecyclerView) findViewById(R.id.comments_recycler_view);
+        commentRecyclerView.setHasFixedSize(true);
+        commentRecyclerView
+                .setLayoutManager(new LinearLayoutManager(HallActivity.this, LinearLayoutManager.HORIZONTAL, false));
+
+    }
+
 
     private void populatRecyclerView() {
         final String image1_key = "image1key";
@@ -225,6 +277,18 @@ public class HallActivity extends Activity {
         adapter.notifyDataSetChanged();// Notify the adapter
 
     }
+
+    private void commentPopulatRecyclerView() {
+        ArrayList<Comment_Model> commentArrayList = new ArrayList<>();
+        for (int k = 0; k < USERNAME_COMMENT.length; k++) {
+            commentArrayList.add(new Comment_Model(USERNAME_COMMENT[k],DATE_COMMENT[k],COMMENT[k]));
+        }
+        Comment_RecyclerView_Adapter  adapter = new Comment_RecyclerView_Adapter(HallActivity.this, commentArrayList);
+        commentRecyclerView.setAdapter(adapter);// set adapter on recyclerview
+        adapter.notifyDataSetChanged();// Notify the adapter
+
+    }
+
 
 
     // 1 async -----------------------------------------------------------------------------------------------------
@@ -441,4 +505,33 @@ public class HallActivity extends Activity {
 
         return linereultcal;
     }
+
+    private void initCollapsingToolbar() {
+        final CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(" ");
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        appBarLayout.setExpanded(true);
+
+        // hiding & showing the title when toolbar expanded & collapsed
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    collapsingToolbar.setTitle(getString(R.string.app_name));
+                    isShow = true;
+                } else if (isShow) {
+                    collapsingToolbar.setTitle(" ");
+                    isShow = false;
+                }
+            }
+        });
+    }
+
 }

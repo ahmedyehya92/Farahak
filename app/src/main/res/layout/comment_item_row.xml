@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="155dp"
+    android:id="@+id/card_view"
+    card_view:cardUseCompatPadding="true"
+
+    android:layout_margin="@dimen/card_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/tx_username"
+            android:text="Ahmed Yehya"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tx_date_comment"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tx_username"
+            android:text="17/5/2017"/>
+
+        <TextView
+            android:id="@+id/tx_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tx_date_comment"
+            android:layout_marginTop="20dp"
+            android:text=" قاعة جميلة وأصحاب القاعة ناس ذوق ومحترمين كانت تجربة حلوة في ليلة العمر"
+            android:maxLines="2"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="اقرأ الملاحظة كاملة"
+            android:textColor="@color/colorPrimary"/>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

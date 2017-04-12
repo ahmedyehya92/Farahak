@@ -42,6 +42,7 @@ public class RecyclerView_Adapter extends RecyclerView.Adapter<RecyclerViewImage
 
         Picasso.with(context)
                 .load(model.getImage().toString())
+                .placeholder(R.drawable.image_load)
                 .into(mainHolder.imageview);
     }
 
