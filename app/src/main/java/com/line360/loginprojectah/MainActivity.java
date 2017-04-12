@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity  {
     HallAdapter Adapter;
     Activity context;
     AsyncTextTask asyncTextTask;
-    RelativeLayout searchbox;
+
     LinearLayout snacBar1;
     LinearLayout loadLayout;
     String url1;
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity  {
             mprogressBar.setIndeterminate(true);
             mprogressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
-        searchbox = (RelativeLayout) findViewById(R.id.search_box);
+
         snacBar1 = (LinearLayout) findViewById(R.id.snack_bar1);
         snacBar1.setVisibility(View.GONE);
         Adapter = new HallAdapter(getApplicationContext(), mHalls);       // انتبه انت عندك هنا constructor مختلف
@@ -221,16 +221,7 @@ public class MainActivity extends AppCompatActivity  {
         });
 
 
-        searchbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),
-                        SearchActivity.class);
-                startActivity(i);
-                finish();
 
-            }
-        });
 
 
 
@@ -279,7 +270,9 @@ public class MainActivity extends AppCompatActivity  {
                     case R.id.navigation_item_attachment:
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
-                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                        startActivity(intent);
+                        finish();
                         break;
 
 
@@ -535,7 +528,7 @@ public class MainActivity extends AppCompatActivity  {
                 JSONArray jsonArray = jsonObject.getJSONArray("halls");
                 for (int i=0;i<jsonArray.length();i++) {
                     JSONObject hall = jsonArray.getJSONObject(i);
-                    mHalls.add(i,new Hall(hall.getInt("id"),hall.getString("name"),hall.getInt("price"),hall.getString("phone"),hall.getString("facebook"),hall.getString("instagram"),hall.getString("twitter"),hall.getString("preparing"),hall.getString("image1"),hall.getString("image2"),hall.getString("image3"),hall.getString("address")));
+                    mHalls.add(i,new Hall(hall.getInt("id"),hall.getString("name"),hall.getInt("price"),hall.getString("phone"),hall.getString("facebook"),hall.getString("instagram"),hall.getString("twitter"),hall.getString("preparing"),hall.getString("image1"),hall.getString("image2"),hall.getString("image3"),hall.getString("address"),hall.getInt("see")));
 
                 }
 

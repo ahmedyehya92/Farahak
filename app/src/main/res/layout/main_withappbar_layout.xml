@@ -25,48 +25,16 @@
             android:textColor="@color/white"/>
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/seaarch"
-    android:layout_marginTop="?attr/actionBarSize"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/search_header">
-    <RelativeLayout
-        android:id="@+id/search_box"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="7dp"
-        android:background="@color/white"
 
-        >
-        <ImageView
-            android:id="@+id/search_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="2dp"
-            android:src="@drawable/ic_search"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="البحث"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/search_icon"
-            android:layout_marginRight="4dp"/>
-
-    </RelativeLayout>
-</RelativeLayout>
 
     <ListView
-        android:layout_below="@id/seaarch"
+        android:layout_below="@id/toolbar_main"
         android:layout_width="match_parent" android:layout_height="match_parent"
         android:id="@+id/list"
         android:orientation="vertical"
-        android:paddingLeft="5sp"
-        android:paddingRight="5sp"
-        android:divider="@color/listView_background"
-        android:dividerHeight="5.0sp"
+        android:scrollbars="none"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:background="@color/listView_background"
         tools:context="com.line360.loginprojectah.MainActivity">
 
@@ -95,7 +63,7 @@
         android:layout_height="match_parent"
         android:background="@color/listView_background"
         android:gravity="center"
-        android:visibility="visible">
+        android:visibility="gone">
         <ProgressBar
             android:id="@+id/progBar"
             android:layout_width="wrap_content"

@@ -124,7 +124,6 @@ public class HomeActivity extends MainActivity {
                         Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
                         startActivity(intent);
 
-                        Toast.makeText(HomeActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
 

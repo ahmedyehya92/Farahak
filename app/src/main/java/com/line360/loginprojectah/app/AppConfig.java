@@ -6,8 +6,8 @@ package com.line360.loginprojectah.app;
 
 public class AppConfig {
     // Server user login url
-    public static final String URL_LOGIN = "http://192.168.43.120/task_manager/v1/login";
+    public static final String URL_LOGIN = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/login";
 
     // Server user register url
-    public static final String URL_REGISTER = "http://192.168.43.120/task_manager/v1/register";
+    public static final String URL_REGISTER = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/register";
 }

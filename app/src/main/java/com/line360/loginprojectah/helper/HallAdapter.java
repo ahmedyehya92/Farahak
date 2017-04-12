@@ -1,6 +1,8 @@
 package com.line360.loginprojectah.helper;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.line360.loginprojectah.R;
+import com.line360.loginprojectah.Ui.CustomTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,7 +23,7 @@ import java.util.ArrayList;
 
 public class HallAdapter extends ArrayAdapter<Hall> {
 
-
+Context context;
     public HallAdapter(Context context, ArrayList<Hall> hallArrayList) {
         super(context,0, hallArrayList);
     }
@@ -39,14 +42,17 @@ public class HallAdapter extends ArrayAdapter<Hall> {
 
         if (viewHolder==null){
             viewHolder = new ViewHolder();
-            viewHolder.txName = (TextView) lisItemView.findViewById(R.id.tx_name);
-            viewHolder.txPrice = (TextView) lisItemView.findViewById(R.id.tx_price);
-            viewHolder.txAddress = (TextView) lisItemView.findViewById(R.id.tx_address);
+            viewHolder.txName = (CustomTextView) lisItemView.findViewById(R.id.tx_name);
+            viewHolder.txPrice = (CustomTextView) lisItemView.findViewById(R.id.tx_price);
+            viewHolder.txAddress = (CustomTextView) lisItemView.findViewById(R.id.tx_address);
+            viewHolder.txSee = (CustomTextView) lisItemView.findViewById(R.id.tx_see);
             viewHolder.hallImage = (ImageView) lisItemView.findViewById(R.id.hall_image);
             lisItemView.setTag(viewHolder);
         }
 
         viewHolder.txName.setText(currentHall.getmName());
+        viewHolder.txSee.setText(currentHall.getmSee());
+
         viewHolder.txPrice.setText(currentHall.getmPrice());
         viewHolder.txAddress.setText(currentHall.getmAddress());
 
@@ -62,9 +68,10 @@ public class HallAdapter extends ArrayAdapter<Hall> {
         return lisItemView;
     }
     class ViewHolder {
-        TextView txName;
-        TextView txPrice;
-        TextView txAddress;
+        CustomTextView txName;
+        CustomTextView txPrice;
+        CustomTextView txAddress;
+        CustomTextView txSee;
         ImageView hallImage;
 
 

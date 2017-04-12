@@ -43,7 +43,6 @@
         android:id="@+id/backdrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:src="@drawable/wedding"
         android:scaleType="centerCrop"
         android:fitsSystemWindows="true"
         app:layout_collapseMode="parallax"
@@ -227,10 +226,11 @@
     <Button
         android:id="@+id/btn_set_date"
         android:layout_width="wrap_content"
-        android:text="حدد موعد مناسبتك السعيدة"
+        android:text="حدد موعد فرحك"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button_shape"
         android:layout_centerHorizontal="true"
+        android:padding="5dp"
         android:layout_above="@id/tx_date"
         android:layout_marginBottom="60dp"/>
 

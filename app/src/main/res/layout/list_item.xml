@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/item_shape">
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_shape"
+    >
 
     <ImageView
         android:id="@+id/hall_image"
         android:src="@drawable/hall"
+        android:layout_alignParentTop="true"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
+        android:foreground="@drawable/image_list_item_shape"
 
         />
     <LinearLayout
+        android:layout_marginRight="15dp"
+        android:id="@+id/name_layout"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -21,50 +27,56 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
+            <com.line360.loginprojectah.Ui.CustomTextView
                 android:id="@+id/tx_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="قاعة ليالي العمر"
-                android:textStyle="bold"
+                android:textSize="24sp"
+
 
                 android:layout_alignParentRight="true"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 
-                android:layout_marginTop="5dp" />
+                 />
 
-            <LinearLayout
-                android:id="@+id/layout_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tx_name"
-                android:layout_alignParentRight="true">
-                <TextView
-                    android:id="@+id/unit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="جنيه"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="5dp"/>
-                <TextView
-                android:id="@+id/tx_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="2000"
-                android:textColor="@color/black"
-                />
 
-            </LinearLayout>
-            <TextView
+            <com.line360.loginprojectah.Ui.CustomTextView
                 android:id="@+id/tx_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/layout_price"
+                android:layout_below="@id/tx_name"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/address"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+
                 tools:text="شارع المحطة، بجوار فندق رمسيس"/>
 
+            <LinearLayout
+                android:id="@+id/layout_see"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_below="@id/tx_address"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
 
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/seeicon512"
+                    />
+
+                <com.line360.loginprojectah.Ui.CustomTextView
+                    android:id="@+id/tx_see"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"/>
+
+            </LinearLayout>
 
         </RelativeLayout>
 
@@ -74,4 +86,33 @@
 
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_price"
+        android:layout_width="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_height="wrap_content">
+
+        <com.line360.loginprojectah.Ui.CustomTextView
+            android:id="@+id/tx_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            tools:text="2000"
+            android:textColor="@color/white"
+            />
+        <com.line360.loginprojectah.Ui.CustomTextView
+            android:id="@+id/unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="جنيه"
+
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="5dp"/>
+    </LinearLayout>
+
+</RelativeLayout>
