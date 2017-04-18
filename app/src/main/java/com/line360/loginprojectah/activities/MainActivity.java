@@ -1,9 +1,6 @@
-package com.line360.loginprojectah;
+package com.line360.loginprojectah.activities;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,21 +17,17 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.line360.loginprojectah.R;
 import com.line360.loginprojectah.helper.MhallsSize;
 
 import com.line360.loginprojectah.helper.SQLiteHandler;
@@ -42,14 +35,7 @@ import com.line360.loginprojectah.helper.SessionManager;
 import com.line360.loginprojectah.helper.Hall;
 import com.line360.loginprojectah.helper.HallAdapter;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -57,7 +43,6 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -89,8 +74,10 @@ public class MainActivity extends AppCompatActivity  {
 
     LinearLayout snacBar1;
     LinearLayout loadLayout;
-    String url1;
+    final String urlGetHalls = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/halls";;
     ProgressBar mprogressBar;
+    private static String apiKey;
+    private static String cityEntry;
 
 
     @Override
@@ -142,25 +129,10 @@ public class MainActivity extends AppCompatActivity  {
 
                if (city != null) {
 
-                    switch (city) {
-                        case "":
-                            break;
-                        case "اسيوط":
-                            url1 = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/halls";
+                   cityEntry = city;
 
-                            asyncTextTask = new AsyncTextTask();
-                            asyncTextTask.execute(url1);
-                            break;
-                        case "سوهاج":
-                            url1 = "https://telegraphic-miscond.000webhostapp.com/Farahak/getsohaghalls.php";
-
-                            asyncTextTask = new AsyncTextTask();
-                            asyncTextTask.execute(url1);
-                            break;
-
-                    }
-
-
+                   asyncTextTask = new AsyncTextTask();
+                   asyncTextTask.execute(urlGetHalls);
                 }
 
 
@@ -240,6 +212,8 @@ public class MainActivity extends AppCompatActivity  {
 
         String name = user.get("name");
         String email = user.get("email");
+        apiKey = user.get("uid");
+
 
         // Displaying the user details on the screen
 
@@ -469,13 +443,13 @@ public class MainActivity extends AppCompatActivity  {
 
 
                     urlConnection.setRequestMethod("POST");
-                  urlConnection.addRequestProperty("Authorization", "685ee9b60db18b3d61803ee6818105e5");
+                  urlConnection.addRequestProperty("Authorization", apiKey);
 
                     urlConnection.setDoInput(true);
                     urlConnection.setDoOutput(true);
 
                     List<NameValuePair> parames = new ArrayList<NameValuePair>();
-                    parames.add(new BasicNameValuePair("city", "assut"));
+                    parames.add(new BasicNameValuePair("city", cityEntry));
 
 
                     OutputStream os = urlConnection.getOutputStream();

@@ -11,7 +11,7 @@ import com.line360.loginprojectah.R;
  */
 
 public class Comment_RecyclerViewHolder extends RecyclerView.ViewHolder {
-public TextView txUsername, txDate, txComment;
+public TextView txUsername, txDate, txComment, txRate;
 
     public Comment_RecyclerViewHolder(View itemView) {
         super(itemView);
@@ -19,5 +19,6 @@ public TextView txUsername, txDate, txComment;
         this.txUsername = (TextView) itemView.findViewById(R.id.tx_username);
         this.txDate = (TextView) itemView.findViewById(R.id.tx_date_comment);
         this.txComment = (TextView) itemView.findViewById(R.id.tx_comment);
+        this.txRate = (TextView) itemView.findViewById(R.id.tx_rate);
     }
 }

@@ -1,18 +1,15 @@
 package com.line360.loginprojectah.helper;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.line360.loginprojectah.R;
-import com.line360.loginprojectah.Ui.CustomTextView;
+import com.line360.loginprojectah.ui.CustomTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -61,7 +58,7 @@ Context context;
         if (!(currentHall.getmUrlOfImage1().toString() == "")){
             Picasso.with(getContext())
                     .load(currentHall.getmUrlOfImage1().toString())
-                    .placeholder(R.drawable.image_load)
+                    .placeholder(R.drawable.placeholder_large)
                     .into(viewHolder.hallImage);
     }
 

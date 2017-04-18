@@ -1,4 +1,4 @@
-package com.line360.loginprojectah.Ui;
+package com.line360.loginprojectah.ui;
 
 import android.content.Context;
 import android.graphics.Typeface;

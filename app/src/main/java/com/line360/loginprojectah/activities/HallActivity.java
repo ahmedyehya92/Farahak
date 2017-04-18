@@ -1,9 +1,6 @@
-package com.line360.loginprojectah;
+package com.line360.loginprojectah.activities;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,7 +11,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,20 +20,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.line360.loginprojectah.R;
 import com.line360.loginprojectah.helper.Comment_Model;
 import com.line360.loginprojectah.helper.Hall;
 import com.line360.loginprojectah.helper.ImageItem;
-import com.line360.loginprojectah.helper.MhallsSize;
 import com.line360.loginprojectah.helper.RecyclerView_Adapter;
 import com.line360.loginprojectah.helper.Comment_RecyclerView_Adapter;
 
+import com.line360.loginprojectah.helper.SQLiteHandler;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
 
@@ -49,7 +45,6 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -59,6 +54,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class HallActivity extends AppCompatActivity {
@@ -66,17 +62,24 @@ public class HallActivity extends AppCompatActivity {
     private static RecyclerView recyclerView;
     private static RecyclerView commentRecyclerView;
     public static final String[] USERNAME_COMMENT = {"Ahmed","Aymen","Rami","Ali"};
+    public static ArrayList<Comment_Model> mComments;
     public static final String[] DATE_COMMENT = {"12/5/2016","13/4/2017","10/2/2017","11/1/2017"};
     public static final String[] COMMENT = {"قاعة جميلة وأسعارهم مناسبة والخدمة فوق الممتاز","قاعة فخمة والخدمة جيدة","ممتازة","قاعة متميزة جدا وتصميمها هايل أنحكم بيها"};
+    public static final String[] RATE = {"3.5","5","4","5"};
     ImageView smallImage;
     public static TextView nameHall,priceHall,addressHall, hallSee;
     public static ExpandableTextView preparingTx;
     AsyncHallTask asyncHallTask;
+    AsyncCommentTask asyncCommentTask;
     final String idKey = "idKey";
     LinearLayout loadLayout;
     BottomNavigationView bottomNavigationView;
     ProgressBar mprogressBar;
+    public  static String nameOhall;
     String url1;
+    private static String apiKey;
+    private SQLiteHandler db;
+    Comment_RecyclerView_Adapter  adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,13 +92,21 @@ public class HallActivity extends AppCompatActivity {
             mprogressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
 
+
+
+
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_hall);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         ab.setDisplayHomeAsUpEnabled(true);
 
+        db = new SQLiteHandler(getApplicationContext());
 
+        HashMap<String, String> user = db.getUserDetails();
+
+
+        apiKey = user.get("uid");
 
         initCollapsingToolbar();
 
@@ -110,7 +121,10 @@ public class HallActivity extends AppCompatActivity {
         initViews();
         populatRecyclerView();
         initCommentViews();
-        commentPopulatRecyclerView();
+        mComments = new ArrayList<Comment_Model>();
+        adapter = new Comment_RecyclerView_Adapter(HallActivity.this, mComments);
+        commentRecyclerView.setAdapter(adapter);// set adapter on recyclerview
+        adapter.notifyDataSetChanged();// Notify the adapter
         // sample code snippet to set the text content on the ExpandableTextView
 
 
@@ -281,7 +295,7 @@ public class HallActivity extends AppCompatActivity {
     private void commentPopulatRecyclerView() {
         ArrayList<Comment_Model> commentArrayList = new ArrayList<>();
         for (int k = 0; k < USERNAME_COMMENT.length; k++) {
-            commentArrayList.add(new Comment_Model(USERNAME_COMMENT[k],DATE_COMMENT[k],COMMENT[k]));
+            commentArrayList.add(new Comment_Model(USERNAME_COMMENT[k],DATE_COMMENT[k],COMMENT[k], RATE[k]));
         }
         Comment_RecyclerView_Adapter  adapter = new Comment_RecyclerView_Adapter(HallActivity.this, commentArrayList);
         commentRecyclerView.setAdapter(adapter);// set adapter on recyclerview
@@ -294,8 +308,8 @@ public class HallActivity extends AppCompatActivity {
     // 1 async -----------------------------------------------------------------------------------------------------
 
     public class AsyncHallTask extends AsyncTask<String, String, List<Hall>> {
-        Intent imgintent = getIntent();
-        final String idIntent = imgintent.getStringExtra(idKey);
+        Intent idIntent = getIntent();
+        final String id = idIntent.getStringExtra(idKey);
 
         @Override
         protected void onPreExecute() {
@@ -335,13 +349,13 @@ public class HallActivity extends AppCompatActivity {
 
 
                     urlConnection.setRequestMethod("POST");
-                    urlConnection.addRequestProperty("Authorization", "bdbdfdd9ebee6849eabb835f825eeaab");
+                    urlConnection.addRequestProperty("Authorization", apiKey);
 
                     urlConnection.setDoInput(true);
                     urlConnection.setDoOutput(true);
 
                     List<NameValuePair> parames = new ArrayList<NameValuePair>();
-                    parames.add(new BasicNameValuePair("id", idIntent));
+                    parames.add(new BasicNameValuePair("id", id));
 
 
                     OutputStream os = urlConnection.getOutputStream();
@@ -395,8 +409,8 @@ public class HallActivity extends AppCompatActivity {
                 if (error != true)
                 {
                     JSONObject hall = jsonObject.getJSONObject("hall");
-                    String name = hall.getString("name");
-                    nameHall.setText(name.toString());
+                    nameOhall = hall.getString("name");
+                    nameHall.setText(nameOhall.toString());
                     String price = hall.getString("price");
                     priceHall.setText(price.toString());
                     String phone = hall.getString("phone");
@@ -420,6 +434,10 @@ public class HallActivity extends AppCompatActivity {
                 loadLayout.setVisibility(View.GONE);
                 bottomNavigationView.setVisibility(View.VISIBLE);
 
+                String urlComment = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/comments";
+
+                asyncCommentTask = new AsyncCommentTask();
+                asyncCommentTask.execute(urlComment);
 
          /*       JSONArray jsonArray = new JSONArray(progress[0]);
                 for (int i=0;i<jsonArray.length();i++) {
@@ -485,6 +503,205 @@ public class HallActivity extends AppCompatActivity {
             return result.toString();
         }
     }
+
+
+
+    public class AsyncCommentTask extends AsyncTask<String, String, String> {
+
+        Intent idIntent = getIntent();
+        final String id = idIntent.getStringExtra(idKey);
+        @Override
+        protected void onPreExecute() {
+            //before works
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            try {
+                String NewsData;
+                //define the url we have to connect with
+                URL url = new URL(params[0]);
+                //make connect with url and send request
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+
+
+
+
+
+                urlConnection.setReadTimeout(10000);
+                urlConnection.setConnectTimeout(40000);
+
+
+
+
+
+
+
+
+                //waiting for 7000ms for response
+                //     urlConnection.setConnectTimeout(40000);//set timeout to 5 seconds
+
+                try {
+                    //      urlConnection.equals(null);
+
+
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.addRequestProperty("Authorization", apiKey);
+
+                    urlConnection.setDoInput(true);
+                    urlConnection.setDoOutput(true);
+
+                    List<NameValuePair> parames = new ArrayList<NameValuePair>();
+                    parames.add(new BasicNameValuePair("hallid", id ));
+
+
+                    OutputStream os = urlConnection.getOutputStream();
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(os, "UTF-8"));
+                    writer.write(getQuery(parames));
+                    writer.flush();
+                    writer.close();
+                    os.close();
+
+
+
+                    //getting the response data
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                    //convert the stream to string
+                    NewsData = ConvertInputToStringNoChange(in);
+
+
+
+
+
+
+                    //send to display data
+                    publishProgress(NewsData);
+                    urlConnection.disconnect();
+
+
+                } catch (Exception ex) {
+                    //end connection
+                    urlConnection.disconnect();
+
+
+                }
+
+            } catch (Exception ex) {
+
+            }
+            return null;
+        }
+
+        protected void onProgressUpdate(String... progress) {
+
+            // التعديل بتاعك هيكون هنا عشان تقدر تاخد الداتا اللي انت عايزها
+
+            try {
+                //display response data
+                JSONObject jsonObject = new JSONObject(progress[0]);
+                //   JSONObject error = jsonObject.getJSONObject("error");
+                Boolean error = jsonObject.getBoolean("error");
+                JSONArray jsonArray = jsonObject.getJSONArray("comments");
+                for (int i=0;i<jsonArray.length();i++) {
+                    JSONObject comment = jsonArray.getJSONObject(i);
+                    mComments.add(i,new Comment_Model(comment.getString("name"),comment.getString("created_at"),comment.getString("review"),comment.getString("rate")));
+
+                }
+
+
+
+         /*       JSONArray jsonArray = new JSONArray(progress[0]);
+                for (int i=0;i<jsonArray.length();i++) {
+                    JSONObject hall = jsonArray.getJSONObject(i);
+                    mHalls.add(i,new Hall(hall.getInt("id"),hall.getString("name"),hall.getInt("price"),hall.getString("phone"),hall.getString("facebook"),hall.getString("instagram"),hall.getString("twitter"),hall.getString("preparing"),hall.getString("image1"),hall.getString("image2"),hall.getString("image3"),hall.getString("address")));
+
+                } */
+
+
+
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //Do something on UiThread
+
+                    }
+                });
+
+                HallActivity.this.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // your stuff to update the UI
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
+
+
+
+               /* JSONObject jsonObject = new JSONObject(progress[0]);
+                JSONObject query = jsonObject.getJSONObject("query");
+                JSONObject result = query.getJSONObject("results");
+                JSONObject channel = result.getJSONObject("channel");
+                JSONObject location = channel.getJSONObject("location");
+                String cityStr = location.getString("city");
+                JSONObject item = channel.getJSONObject("item");
+                JSONObject condition = item.getJSONObject("condition");
+                String tempStr = condition.getString("temp");
+                String conditionStr = condition.getString("text");
+                String dateStr = condition.getString("date");
+                String urlOfImage = "http://i.imgur.com/loHDpym.png";
+
+
+                mHalls.add(0, new Hall(cityStr, tempStr, conditionStr, dateStr, urlOfImage)); */
+
+
+
+
+
+            }
+            catch (Exception ex) {
+
+
+            }
+
+
+        }
+
+        protected void onPostExecute(String result2) {
+
+        }
+
+
+
+        private String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException
+        {
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+
+            for (NameValuePair pair : params)
+            {
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(pair.getName(), "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
+            }
+
+            return result.toString();
+        }
+    }
+
+
+
+
+
 // 2 async tool --------------------------------------------------------------------------------------------------------
     public static String ConvertInputToStringNoChange(InputStream inputStream) {
 
@@ -524,7 +741,7 @@ public class HallActivity extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbar.setTitle(getString(R.string.app_name));
+                    collapsingToolbar.setTitle(nameOhall.toString());
                     isShow = true;
                 } else if (isShow) {
                     collapsingToolbar.setTitle(" ");

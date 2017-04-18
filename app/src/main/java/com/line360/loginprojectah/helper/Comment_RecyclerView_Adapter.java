@@ -42,6 +42,7 @@ public class Comment_RecyclerView_Adapter extends RecyclerView.Adapter<Comment_R
         mainHolder.txUsername.setText(model.getUsername());
         mainHolder.txDate.setText(model.getDate());
         mainHolder.txComment.setText(model.getComment());
+        mainHolder.txRate.setText(model.getRate());
 
     }
 

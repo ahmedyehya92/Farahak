@@ -1,9 +1,8 @@
-package com.line360.loginprojectah;
+package com.line360.loginprojectah.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +14,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.line360.loginprojectah.R;
 import com.line360.loginprojectah.helper.SQLiteHandler;
 import com.line360.loginprojectah.helper.SessionManager;
 import com.line360.loginprojectah.app.AppConfig;
@@ -49,6 +49,7 @@ public class LoginActivity extends Activity {
 
         // SQLite database handler
         db = new SQLiteHandler(getApplicationContext());
+
 
         // Session manager
         session = new SessionManager(getApplicationContext());
@@ -127,13 +128,14 @@ public class LoginActivity extends Activity {
                         String uid = jObj.getString("apiKey");
 
                         JSONObject user = jObj.getJSONObject("user");
+                        String user_id = user.getString("id");
                         String name = user.getString("name");
                         String email = user.getString("email");
                         String created_at = user
                                 .getString("created_at");
 
                         // Inserting row in users table
-                        db.addUser(name, email, uid, created_at);
+                        db.addUser(user_id,name, email, uid, created_at);
 
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
@@ -142,7 +144,7 @@ public class LoginActivity extends Activity {
                         finish();
                     } else {
                         // Error in login. Get the error message
-                        String errorMsg = jObj.getString("error_msg");
+                        String errorMsg = jObj.getString("message");
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }

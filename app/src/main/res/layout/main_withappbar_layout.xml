@@ -36,7 +36,7 @@
         android:divider="@null"
         android:dividerHeight="0dp"
         android:background="@color/listView_background"
-        tools:context="com.line360.loginprojectah.MainActivity">
+        tools:context="com.line360.loginprojectah.activities.MainActivity">
 
     </ListView>
     <LinearLayout

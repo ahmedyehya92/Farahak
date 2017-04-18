@@ -1,9 +1,8 @@
-package com.line360.loginprojectah;
+package com.line360.loginprojectah.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -126,13 +125,14 @@ public class RegisterActivity extends Activity {
                         String uid = jObj.getString("apiKey");
 
                         JSONObject user = jObj.getJSONObject("user");
+                        String user_id = user.getString("id");
                         String name = user.getString("name");
                         String email = user.getString("email");
                         String created_at = user
                                 .getString("created_at");
 
                         // Inserting row in users table
-                        db.addUser(name, email, uid, created_at);
+                        db.addUser(user_id, name, email, uid, created_at);
 
                         Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
 
@@ -146,7 +146,7 @@ public class RegisterActivity extends Activity {
 
                         // Error occurred in registration. Get the error
                         // message
-                        String errorMsg = jObj.getString("error_msg");
+                        String errorMsg = jObj.getString("message");
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
