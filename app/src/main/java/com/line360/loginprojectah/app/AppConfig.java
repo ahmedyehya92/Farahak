@@ -10,4 +10,8 @@ public class AppConfig {
 
     // Server user register url
     public static final String URL_REGISTER = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/register";
+
+    public static final String URL_REVIEW = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/review";
+
+    public static final String URL_SEARCH = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/search";
 }

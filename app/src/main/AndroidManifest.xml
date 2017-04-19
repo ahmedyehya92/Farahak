@@ -44,12 +44,15 @@
             android:name=".activities.HallActivity"
             android:label=""
             android:theme="@style/Base.Theme.DesignDemo" />
-        <activity android:name=".activities.SearchActivity" />
+        <activity android:name=".activities.SearchActivity"
+            android:theme="@style/Base.Theme.DesignDemo"
+            android:label=""/>
         <activity
             android:name=".activities.HomeActivity"
             android:label=""
             android:theme="@style/Base.Theme.DesignDemo" />
         <activity android:name=".activities.ReviewActivity"
+            android:label="التقييم"
             android:exported="true"></activity>
     </application>
 

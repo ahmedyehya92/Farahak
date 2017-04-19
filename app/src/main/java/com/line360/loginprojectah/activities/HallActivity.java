@@ -59,10 +59,12 @@ import java.util.List;
 
 public class HallActivity extends AppCompatActivity {
     private static String TAG;
-    private static RecyclerView recyclerView;
+    private LinearLayout btn_rating;
+    private static RecyclerView imRecyclerView;
     private static RecyclerView commentRecyclerView;
     public static final String[] USERNAME_COMMENT = {"Ahmed","Aymen","Rami","Ali"};
     public static ArrayList<Comment_Model> mComments;
+    public static ArrayList<ImageItem> imageItems;
     public static final String[] DATE_COMMENT = {"12/5/2016","13/4/2017","10/2/2017","11/1/2017"};
     public static final String[] COMMENT = {"قاعة جميلة وأسعارهم مناسبة والخدمة فوق الممتاز","قاعة فخمة والخدمة جيدة","ممتازة","قاعة متميزة جدا وتصميمها هايل أنحكم بيها"};
     public static final String[] RATE = {"3.5","5","4","5"};
@@ -72,6 +74,7 @@ public class HallActivity extends AppCompatActivity {
     AsyncHallTask asyncHallTask;
     AsyncCommentTask asyncCommentTask;
     final String idKey = "idKey";
+    final String idKeyGo = "idHallkey";
     LinearLayout loadLayout;
     BottomNavigationView bottomNavigationView;
     ProgressBar mprogressBar;
@@ -80,6 +83,7 @@ public class HallActivity extends AppCompatActivity {
     private static String apiKey;
     private SQLiteHandler db;
     Comment_RecyclerView_Adapter  adapter;
+    RecyclerView_Adapter imAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,7 +114,7 @@ public class HallActivity extends AppCompatActivity {
 
         initCollapsingToolbar();
 
-
+        btn_rating = (LinearLayout) findViewById(R.id.btn_rating);
         smallImage = (ImageView) findViewById(R.id.small_image);
         nameHall = (TextView) findViewById(R.id.tx_name_hall);
         hallSee = (TextView) findViewById(R.id.tx_see);
@@ -119,13 +123,36 @@ public class HallActivity extends AppCompatActivity {
 
 
         initViews();
-        populatRecyclerView();
+       // populatRecyclerView();
         initCommentViews();
         mComments = new ArrayList<Comment_Model>();
         adapter = new Comment_RecyclerView_Adapter(HallActivity.this, mComments);
         commentRecyclerView.setAdapter(adapter);// set adapter on recyclerview
         adapter.notifyDataSetChanged();// Notify the adapter
-        // sample code snippet to set the text content on the ExpandableTextView
+
+
+
+
+        imageItems = new ArrayList<ImageItem>();
+        imAdapter = new RecyclerView_Adapter(HallActivity.this,imageItems);
+        imRecyclerView.setAdapter(imAdapter);
+        imAdapter.notifyDataSetChanged();
+
+        //config layout as button
+
+        btn_rating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent idIntent = getIntent();
+                final String idHall = idIntent.getStringExtra(idKey);
+
+                Intent myIntent = new Intent(getApplicationContext(), ReviewActivity.class);
+                myIntent.putExtra(idKeyGo,idHall);
+                startActivity(myIntent);
+                finish();
+
+            }
+        });
 
 
         final String smallImage_key = "image1key";
@@ -258,10 +285,10 @@ public class HallActivity extends AppCompatActivity {
 
     private void initViews() {
 
-        recyclerView = (RecyclerView)
+        imRecyclerView = (RecyclerView)
                 findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView
+        imRecyclerView.setHasFixedSize(true);
+        imRecyclerView
                 .setLayoutManager(new LinearLayoutManager(HallActivity.this, LinearLayoutManager.HORIZONTAL, false));
 
     }
@@ -287,21 +314,12 @@ public class HallActivity extends AppCompatActivity {
             arrayList.add(new ImageItem(IMAGES1[i]));
         }
         RecyclerView_Adapter  adapter = new RecyclerView_Adapter(HallActivity.this, arrayList);
-        recyclerView.setAdapter(adapter);// set adapter on recyclerview
+        imRecyclerView.setAdapter(adapter);// set adapter on recyclerview
         adapter.notifyDataSetChanged();// Notify the adapter
 
     }
 
-    private void commentPopulatRecyclerView() {
-        ArrayList<Comment_Model> commentArrayList = new ArrayList<>();
-        for (int k = 0; k < USERNAME_COMMENT.length; k++) {
-            commentArrayList.add(new Comment_Model(USERNAME_COMMENT[k],DATE_COMMENT[k],COMMENT[k], RATE[k]));
-        }
-        Comment_RecyclerView_Adapter  adapter = new Comment_RecyclerView_Adapter(HallActivity.this, commentArrayList);
-        commentRecyclerView.setAdapter(adapter);// set adapter on recyclerview
-        adapter.notifyDataSetChanged();// Notify the adapter
 
-    }
 
 
 
@@ -310,7 +328,7 @@ public class HallActivity extends AppCompatActivity {
     public class AsyncHallTask extends AsyncTask<String, String, List<Hall>> {
         Intent idIntent = getIntent();
         final String id = idIntent.getStringExtra(idKey);
-
+String s = "h";
         @Override
         protected void onPreExecute() {
             //before works
@@ -423,8 +441,26 @@ public class HallActivity extends AppCompatActivity {
                     Picasso.with(getApplicationContext())
                             .load(image1.toString())
                             .into(smallImage);
+                    imageItems.add(0,new ImageItem(image1));
                     String image2 = hall.getString("image2");
+                    imageItems.add(1,new ImageItem(image2));
                     String image3 = hall.getString("image3");
+                    imageItems.add(2,new ImageItem(image3));
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            //Do something on UiThread
+
+                        }
+                    });
+
+                    HallActivity.this.runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            // your stuff to update the UI
+                            imAdapter.notifyDataSetChanged();
+                        }
+                    });
                     String address = hall.getString("address");
                     addressHall.setText(address.toString());
                     String see = hall.getString("see");

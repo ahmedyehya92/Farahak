@@ -67,7 +67,7 @@ public class HomeActivity extends MainActivity {
 
         HashMap<String, String> user = db.getUserDetails();
 
-        String name = user.get("created_at");
+        String name = user.get("name");
 
 
 
