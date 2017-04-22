@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">فرحك</string>
-    <string name="hint_email">Email</string>
-    <string name="hint_password">Password</string>
-    <string name="hint_name">Fullname</string>
-    <string name="btn_login">LOGIN</string>
-    <string name="btn_register">REGISTER</string>
-    <string name="btn_link_to_register">Not a member? Sign up now.</string>
-    <string name="btn_link_to_login">Already registred! Login Me.</string>
+    <string name="hint_email">الإيميل</string>
+    <string name="hint_password">الرقم السري</string>
+    <string name="hint_name">الإسم بالكامل</string>
+    <string name="btn_login">تسجيل الدخول</string>
+    <string name="btn_register">تسجيل</string>
+    <string name="btn_link_to_register">ليس لديك حساب! قم بالتسجيل الآن.</string>
+    <string name="btn_link_to_login">لديك حساب بالفعل! قم بتسجيل الدخول.</string>
     <string name="welcome">Welcome</string>
     <string name="btn_logout">LOGOUT</string>
     <string name="name">Fullname</string>
-    <string name="nav_item_attachment">تصفح القاعات</string>
+    <string name="nav_item_attachment">البحث عن القاعات</string>
     <string name="nav_item_images">clothes</string>
     <string name="nav_item_location">Accessories</string>
     <string name="nav_sub_menu">SubMenu</string>
@@ -50,6 +50,11 @@
     <string name="menu_night_mode_day">Day (always)</string>
     <string name="menu_night_mode_night">Night (always)</string>
     <string name="menu_night_mode_auto">Auto</string>
+    <string name="about_text" >هذا التطبيق تابع لشركة\n
+    KYW Line\n</string>
+    <string name="share_app_text">قم بتجربة تطبيق فرحة\n
+    B</string>
+    <string name="share_with">مشاركة التطبيق مع أصدقائك</string>
 
 
 </resources>

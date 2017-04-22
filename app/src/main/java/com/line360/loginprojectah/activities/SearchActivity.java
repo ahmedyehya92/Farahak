@@ -27,6 +27,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.line360.loginprojectah.R;
 import com.line360.loginprojectah.app.AppConfig;
 import com.line360.loginprojectah.app.AppController;
+import com.line360.loginprojectah.helper.City;
+import com.line360.loginprojectah.helper.CityAdapter;
 import com.line360.loginprojectah.helper.Hall;
 import com.line360.loginprojectah.helper.SQLiteHandler;
 
@@ -42,11 +44,11 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     private static final String TAG = SearchActivity.class.getSimpleName();
     private SearchView mSearchView;
     private ListView mListView;
-    public static ArrayList<String> citys;
+    public static ArrayList<City> cities;
     private TextView citytx;
     private SQLiteHandler db;
     private static String api_key;
-    ArrayAdapter<String> adapter;
+    CityAdapter adapter;
 
 
 
@@ -62,7 +64,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         ab.setDisplayHomeAsUpEnabled(true);
-        citys = new ArrayList<String>();
+        cities = new ArrayList<City>();
         db = new SQLiteHandler(getApplicationContext());
 
         HashMap<String, String> user = db.getUserDetails();
@@ -84,9 +86,9 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         mSearchView = (SearchView) findViewById(R.id.search_view);
         mListView = (ListView) findViewById(R.id.list_view);
         mListView.setVisibility(View.GONE);
-        adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,citys);
+        adapter = new CityAdapter(getApplicationContext(),cities);
         mListView.setAdapter(adapter);
-        citys.clear();
+        cities.clear();
 
 
         setupSearchView();
@@ -106,17 +108,16 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             queue.cancelAll("req_search");
             Log.i(TAG, "all search request were cancelled");
         }
-        citys.clear();
+        cities.clear();
         searchQuery(newText);
         Log.d(TAG, "Text Response: " + newText);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                citytx = (TextView) findViewById(android.R.id.text1);
-                String city = citytx.getText().toString();
+                City city = cities.get(position);
+                String idCity = city.getCityId();
                 final String city_key = "citykey";
-                String cityIntent = city;
+                String cityIntent = idCity;
                 Intent myIntent = new Intent(view.getContext(), MainActivity.class);
                 myIntent.putExtra(city_key, cityIntent);
                 startActivityForResult(myIntent, 0);
@@ -125,14 +126,13 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             }
         });
         if (TextUtils.isEmpty(newText)) {
-            RequestQueue queueE = AppController.getInstance().getRequestQueue();
-            if(queueE!=null){
+            if(queue!=null){
 
                 queue.cancelAll("req_search");
                 Log.i(TAG, "all search request were cancelled");
             }
 
-            citys.clear();
+            cities.clear();
 
             mListView.setVisibility(View.GONE);
         } else {
@@ -142,6 +142,13 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     }
 
     public boolean onQueryTextSubmit(String query) {
+        RequestQueue queueE = AppController.getInstance().getRequestQueue();
+        if(queueE!=null){
+
+            queueE.cancelAll("req_search");
+            Log.i(TAG, "all search request were cancelled");
+        }
+        mListView.setVisibility(View.GONE);
         return false;
     }
 
@@ -191,7 +198,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                         JSONArray jsonArray = jObj.getJSONArray("cities");
                         for (int i=0;i<jsonArray.length();i++) {
                             JSONObject city = jsonArray.getJSONObject(i);
-                            citys.add(i,city.getString("city"));
+                            cities.add(i,new City(city.getString("id"),city.getString("governerote"),city.getString("city")));
 
                         }
 

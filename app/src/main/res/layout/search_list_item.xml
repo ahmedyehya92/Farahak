@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    >
+
+    <ImageView
+        android:id="@+id/location_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_location_on_white_24dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toLeftOf="@id/location_icon"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:gravity="right">
+
+        <TextView
+            android:id="@+id/tx_city_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="التجمع الخامس"
+            android:textSize="16sp"
+            />
+        <TextView
+            android:id="@+id/tx_governorate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/listView_background"
+            android:text="القاهرة"/>
+    </LinearLayout>
+</RelativeLayout>

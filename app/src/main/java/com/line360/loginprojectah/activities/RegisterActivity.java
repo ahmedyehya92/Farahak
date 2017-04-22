@@ -48,7 +48,7 @@ public class RegisterActivity extends Activity {
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
 
         // Progress dialog
-        pDialog = new ProgressDialog(this);
+        pDialog = new ProgressDialog(this,ProgressDialog.THEME_HOLO_DARK);
         pDialog.setCancelable(false);
 
         // Session manager

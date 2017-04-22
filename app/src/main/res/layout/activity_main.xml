@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+
     tools:openDrawer="start"
     tools:context=".activities.MainActivity" >
 
@@ -24,6 +25,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+
+        app:theme="@style/NavigationDrawerStyle"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer"/>
 

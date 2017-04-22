@@ -31,6 +31,7 @@ public class ReviewActivity extends AppCompatActivity {
     private Button btnSubmit;
     private static EditText etReview;
     private static String ratingValue;
+    private static float ratingValueF;
     private ProgressDialog pDialog;
     private SQLiteHandler db;
     private static String rating = "empty";
@@ -54,6 +55,7 @@ public class ReviewActivity extends AppCompatActivity {
                                         boolean fromUser) {
 
                ratingValue = String.valueOf(rating);
+                ratingValueF = rating;
 
             }
         });
@@ -88,7 +90,7 @@ public class ReviewActivity extends AppCompatActivity {
                             "الرجاء كتابة تعليق في المكان المخصص", Toast.LENGTH_LONG)
                             .show();
                 }
-                else if (rating == "empty"|| rating =="0") {
+                else if (rating == "empty"|| ratingValueF==0.0f) {
                     Toast.makeText(getApplicationContext(),
                             "الرجاء التقييم من خلال الضغط والسحب على شريط التقييم بالأعلى", Toast.LENGTH_LONG)
                             .show();

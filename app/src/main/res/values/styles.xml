@@ -9,6 +9,23 @@
 
     </style>
 
+
+    <style name="NavigationDrawerStyle">
+        <item name="android:textStyle">bold</item><!-- text size in menu-->
+        <item name="android:listPreferredItemHeightSmall">40dp</item><!-- item size in menu-->
+
+    </style>
+
+
+    <style name="LoginTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/white</item>
+
+    </style>
+
+
     <style name="Base.Theme.DesignDemo" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

@@ -5,4 +5,19 @@ package com.line360.loginprojectah.helper;
  */
 
 public class City {
+
+    private String mId;
+    private String mGovernorate;
+    private String mCity;
+
+    public City ( String id, String governorate, String city) {
+
+        mId = id;
+        mGovernorate = governorate;
+        mCity = city;
+    }
+
+    public String getCityId() {return mId;}
+    public String getCity() {return mCity;}
+    public String getGovernorate() {return mGovernorate;}
 }

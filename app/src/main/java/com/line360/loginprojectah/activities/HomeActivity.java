@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -108,19 +109,41 @@ public class HomeActivity extends MainActivity {
                 switch (menuItem.getItemId())
                 {
                     case R.id.nav_item_logout:
+                        mDrawerLayout.closeDrawers();
                         dateSharedpref.SaveData(null);
                         logoutUser();
                         break;
 
+                    case R.id.nav_item_share_app:
+                        mDrawerLayout.closeDrawers();
+                        final String appPackageName = getPackageName();
+                        String shareBody = "قم بتجربة تطبيق فرحة ومشاركته مع أصدقائك \n https://play.google.com/store/apps/details?id="+ appPackageName;
+                        Log.d("share", shareBody.toString());
+                        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        sharingIntent.setType("text/plain");
+                        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "مشاركة تطبيق فرحة");
+                        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_with)));
+                        break;
 
                     case R.id.navigation_item_attachment:
-                        menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
                         Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
                         startActivity(intent);
+                        break;
+
+                    case R.id.nav_home:
+                        mDrawerLayout.closeDrawers();
 
                         break;
 
+                    case R.id.nav_item_Exit:
+                        mDrawerLayout.closeDrawers();
+                        Intent a = new Intent(Intent.ACTION_MAIN);
+                        a.addCategory(Intent.CATEGORY_HOME);
+                        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(a);
+                        break;
 
                 }
 
@@ -161,6 +184,10 @@ public class HomeActivity extends MainActivity {
         if (isNavDrawerOpen()) {
             closeNavDrawer();
         } else {
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
             super.onBackPressed();
         }
     }

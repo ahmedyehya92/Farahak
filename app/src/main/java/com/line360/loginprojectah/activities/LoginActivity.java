@@ -44,7 +44,7 @@ public class LoginActivity extends Activity {
         btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
 
         // Progress dialog
-        pDialog = new ProgressDialog(this);
+        pDialog = new ProgressDialog(this,ProgressDialog.THEME_HOLO_DARK);
         pDialog.setCancelable(false);
 
         // SQLite database handler
@@ -104,6 +104,7 @@ public class LoginActivity extends Activity {
         String tag_string_req = "req_login";
 
         pDialog.setMessage("Logging in ...");
+
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,

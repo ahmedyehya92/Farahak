@@ -227,10 +227,10 @@ public class MainActivity extends AppCompatActivity  {
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         View header=navigationView.getHeaderView(0);
-        txtName = (TextView)header.findViewById(R.id.nav_name);
+     /*   txtName = (TextView)header.findViewById(R.id.nav_name);
         txtName.setText(name);
         txtEmail = (TextView)header.findViewById(R.id.nav_email);
-        txtEmail.setText(email);
+        txtEmail.setText(email); */
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -251,7 +251,36 @@ public class MainActivity extends AppCompatActivity  {
                         break;
 
 
+                    case R.id.nav_item_share_app:
+                        mDrawerLayout.closeDrawers();
+                        final String appPackageName = getPackageName();
+                        String shareBody = "قم بتجربة تطبيق فرحة ومشاركته مع أصدقائك \n https://play.google.com/store/apps/details?id="+ appPackageName;
+                        Log.d("share", shareBody.toString());
+                        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        sharingIntent.setType("text/plain");
+                        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "مشاركة تطبيق فرحة");
+                        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_with)));
+                        break;
+
+                    case R.id.nav_home:
+                        menuItem.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                        startActivity(homeIntent);
+                        finish();
+                        break;
+
+                    case R.id.nav_item_Exit:
+                        mDrawerLayout.closeDrawers();
+                        Intent a = new Intent(Intent.ACTION_MAIN);
+                        a.addCategory(Intent.CATEGORY_HOME);
+                        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(a);
+                        break;
+
                 }
+
 
                 return true;
 

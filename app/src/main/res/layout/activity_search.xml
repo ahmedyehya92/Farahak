@@ -17,14 +17,17 @@
         android:layout_width="300dp"
         android:layout_alignParentLeft="true"
         android:layout_height="wrap_content"
+
         android:background="@color/colorPrimary"/>
     <ListView
         android:id="@+id/list_view"
         android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:background="@drawable/search_list_shape"
         android:layout_alignParentLeft="true"
-        android:scrollbars="none"
-        android:layout_marginTop="36dp"/>
+
+        android:layout_marginTop="41dp"/>
 
 </RelativeLayout>
