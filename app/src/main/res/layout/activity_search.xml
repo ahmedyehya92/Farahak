@@ -12,6 +12,7 @@
         android:background="?attr/colorPrimary"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <SearchView
         android:id="@+id/search_view"
         android:layout_width="300dp"
@@ -19,6 +20,11 @@
         android:layout_height="wrap_content"
 
         android:background="@color/colorPrimary"/>
+    <include
+        android:id="@+id/list_gov"
+        layout="@layout/gov_list"
+
+        />
     <ListView
         android:id="@+id/list_view"
         android:layout_width="300dp"
@@ -29,5 +35,7 @@
         android:layout_alignParentLeft="true"
 
         android:layout_marginTop="41dp"/>
+
+
 
 </RelativeLayout>

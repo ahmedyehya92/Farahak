@@ -28,6 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.line360.loginprojectah.R;
+import com.line360.loginprojectah.app.AppConfig;
 import com.line360.loginprojectah.helper.MhallsSize;
 
 import com.line360.loginprojectah.helper.SQLiteHandler;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity  {
     HallAdapter Adapter;
     Activity context;
     AsyncTextTask asyncTextTask;
-
+    private static int status;
     LinearLayout snacBar1;
     LinearLayout loadLayout;
     final String urlGetHalls = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/halls";;
@@ -115,7 +116,9 @@ public class MainActivity extends AppCompatActivity  {
         mHalls.clear();
 
         final String city_key = "citykey";
-
+        final String status_gov_key = "statusGovKey";
+        Intent statusIntent = getIntent();
+        status = statusIntent.getIntExtra(status_gov_key,0);
 
 
         if ((mHalls.size()==MhallsSize.getmArraylistSize())&& MhallsSize.getmArraylistSize()!=0)
@@ -131,8 +134,15 @@ public class MainActivity extends AppCompatActivity  {
 
                    cityEntry = city;
 
+
                    asyncTextTask = new AsyncTextTask();
-                   asyncTextTask.execute(urlGetHalls);
+                   if (status == 1) {
+                       asyncTextTask.execute(AppConfig.URL_GET_GOVS_HALL);
+                   }
+
+                   else {
+                       asyncTextTask.execute(urlGetHalls);
+                   }
                 }
 
 
@@ -479,8 +489,15 @@ public class MainActivity extends AppCompatActivity  {
                     urlConnection.setDoOutput(true);
 
                     List<NameValuePair> parames = new ArrayList<NameValuePair>();
-                    parames.add(new BasicNameValuePair("city", cityEntry));
 
+                    if (status == 1)
+                    {
+                        parames.add(new BasicNameValuePair("govid", cityEntry));
+                    }
+
+                    else {
+                        parames.add(new BasicNameValuePair("city", cityEntry));
+                    }
 
                     OutputStream os = urlConnection.getOutputStream();
                     BufferedWriter writer = new BufferedWriter(

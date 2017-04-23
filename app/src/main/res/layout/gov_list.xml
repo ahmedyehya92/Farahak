@@ -3,28 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
-    android:id="@+id/list_cities_layout">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/tx_full_govs"
-
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
-            android:text="البلد بالكامل"/>
-
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+    android:id="@+id/list_gov">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -36,7 +15,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="5dp"
-            android:text="إختر مدينة"/>
+            android:text="إختر منطقة"/>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
@@ -46,7 +25,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list_cities"
+        android:id="@+id/list_govs"
         android:orientation="vertical"
         android:dividerHeight="1dp"></ListView>
 </LinearLayout>

@@ -11,19 +11,19 @@
         android:id="@+id/action_facebook"
         android:enabled="true"
         android:icon="@drawable/ic_facebook"
-        android:title="facebook"
+        android:title="فيس بوك"
         app:showAsAction="ifRoom" />
     <item
     android:id="@+id/action_instagram"
     android:enabled="true"
     android:icon="@drawable/ic_instagram"
-    android:title="instagram"
+    android:title="إنستجرام"
     app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_twitter"
+        android:id="@+id/action_youtybe"
         android:enabled="true"
-        android:icon="@drawable/ic_twitter"
-        android:title="twitter"
+        android:icon="@drawable/ic_youtube"
+        android:title="يوتيوب"
         app:showAsAction="ifRoom" />
 </menu>

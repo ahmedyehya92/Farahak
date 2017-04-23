@@ -11,11 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.android.volley.AuthFailureError;
@@ -27,9 +25,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.line360.loginprojectah.R;
 import com.line360.loginprojectah.app.AppConfig;
 import com.line360.loginprojectah.app.AppController;
-import com.line360.loginprojectah.helper.City;
-import com.line360.loginprojectah.helper.CityAdapter;
-import com.line360.loginprojectah.helper.Hall;
+import com.line360.loginprojectah.helper.CitySearch;
+import com.line360.loginprojectah.helper.CitySearchAdapter;
+import com.line360.loginprojectah.helper.Gov;
+import com.line360.loginprojectah.helper.GovAdapter;
 import com.line360.loginprojectah.helper.SQLiteHandler;
 
 import org.json.JSONArray;
@@ -44,11 +43,14 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     private static final String TAG = SearchActivity.class.getSimpleName();
     private SearchView mSearchView;
     private ListView mListView;
-    public static ArrayList<City> cities;
+    private ListView govListView;
+    public static ArrayList<CitySearch> cities;
+    public static ArrayList<Gov> govs;
     private TextView citytx;
     private SQLiteHandler db;
     private static String api_key;
-    CityAdapter adapter;
+    CitySearchAdapter adapter;
+    GovAdapter goveAdapter;
 
 
 
@@ -58,50 +60,63 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 
         setContentView(R.layout.activity_search);
-
+        getGovs("a");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         ab.setDisplayHomeAsUpEnabled(true);
-        cities = new ArrayList<City>();
+        cities = new ArrayList<CitySearch>();
+        govs = new ArrayList<Gov>();
         db = new SQLiteHandler(getApplicationContext());
 
         HashMap<String, String> user = db.getUserDetails();
 
         api_key = user.get("uid");
 
-      /*  citys.add(0, "اسيوط");
-        citys.add(1, "سوهاج");
-        citys.add(2, "اسيوط");
-        citys.add(3, "سوهاج");
-        citys.add(4, "اسيوط");
-        citys.add(5, "سوهاج");
-        citys.add(6, "اسيوط");
-        citys.add(7, "سوهاج");
-        citys.add(8, "اسيوط");
-        citys.add(9, "سوهاج");
-        citys.add(10, "اسيوط");
-        citys.add(11, "سوهاج"); */
         mSearchView = (SearchView) findViewById(R.id.search_view);
         mListView = (ListView) findViewById(R.id.list_view);
+        govListView = (ListView) findViewById(R.id.list_govs);
         mListView.setVisibility(View.GONE);
-        adapter = new CityAdapter(getApplicationContext(),cities);
+        adapter = new CitySearchAdapter(getApplicationContext(),cities);
+        goveAdapter = new GovAdapter(getApplicationContext(),govs);
         mListView.setAdapter(adapter);
+        govListView.setAdapter(goveAdapter);
+        govs.clear();
         cities.clear();
+
+        mSearchView.animate();
+
+        govListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Gov gov = govs.get(position);
+                String idGove = gov.getCityId();
+                final String gove_key = "govekey";
+                String govIntent = idGove;
+                Intent myIntent = new Intent(view.getContext(), CitiesActivity.class);
+                myIntent.putExtra(gove_key, govIntent);
+                startActivity(myIntent);
+
+            }
+        });
 
 
         setupSearchView();
+
+
     }
 
     private void setupSearchView() {
+
         mSearchView.setIconifiedByDefault(false);
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setSubmitButtonEnabled(true);
-        mSearchView.setQueryHint("البحث بإسم المحافظة");
+        mSearchView.setQueryHint("اختر مدينتك");
     }
 
     public boolean onQueryTextChange(String newText) {
+
         RequestQueue queue = AppController.getInstance().getRequestQueue();
         if(queue!=null){
 
@@ -111,11 +126,19 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         cities.clear();
         searchQuery(newText);
         Log.d(TAG, "Text Response: " + newText);
+
+
+
+
+
+
+
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                City city = cities.get(position);
-                String idCity = city.getCityId();
+                CitySearch citySearch = cities.get(position);
+                String idCity = citySearch.getCityId();
                 final String city_key = "citykey";
                 String cityIntent = idCity;
                 Intent myIntent = new Intent(view.getContext(), MainActivity.class);
@@ -171,6 +194,12 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStart() {
+
+
+        super.onStart();
+    }
 
     /**
      * Function to search in MySQL database will post params(tag, name,
@@ -198,7 +227,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                         JSONArray jsonArray = jObj.getJSONArray("cities");
                         for (int i=0;i<jsonArray.length();i++) {
                             JSONObject city = jsonArray.getJSONObject(i);
-                            cities.add(i,new City(city.getString("id"),city.getString("governerote"),city.getString("city")));
+                            cities.add(i,new CitySearch(city.getString("id"),city.getString("governerote"),city.getString("city")));
 
                         }
 
@@ -261,5 +290,96 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     }
 
 
+
+
+
+
+
+
+
+
+    private void getGovs(final String goves) {
+        // Tag used to cancel the request
+        String tag_string_req = "req_get_govs";
+
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_GET_GOVES, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Get Goves Response: " + response.toString());
+
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        // User successfully stored in MySQL
+                        // Now store the user in sqlite
+                        JSONArray jsonArray = jObj.getJSONArray("governorates");
+                        for (int i=0;i<jsonArray.length();i++) {
+                            JSONObject gov = jsonArray.getJSONObject(i);
+                            govs.add(i,new Gov(gov.getString("id"),gov.getString("governerote")));
+
+                        }
+
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                //Do something on UiThread
+
+                            }
+                        });
+
+                        SearchActivity.this.runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // your stuff to update the UI
+                                goveAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        // Launch login activity
+                    } else {
+
+                        // Error occurred in registration. Get the error
+                        // message
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, " Error: " + "error");
+
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("govs", goves);
+
+
+                return params;
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                headers.put("Authorization", api_key);
+                return headers;
+            }
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
 
 }

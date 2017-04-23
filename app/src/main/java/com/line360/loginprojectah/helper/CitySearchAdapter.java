@@ -6,12 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.line360.loginprojectah.R;
-import com.line360.loginprojectah.ui.CustomTextView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -19,10 +16,10 @@ import java.util.ArrayList;
  * Created by Ahmed Yehya on 19/04/2017.
  */
 
-public class CityAdapter extends ArrayAdapter<City> {
+public class CitySearchAdapter extends ArrayAdapter<CitySearch> {
 
     Context context;
-    public CityAdapter(Context context, ArrayList<City> citiesArrayList) {
+    public CitySearchAdapter(Context context, ArrayList<CitySearch> citiesArrayList) {
         super(context,0, citiesArrayList);
     }
 
@@ -35,18 +32,18 @@ public class CityAdapter extends ArrayAdapter<City> {
         if (lisItemView == null) {
             lisItemView = LayoutInflater.from(getContext()).inflate(R.layout.search_list_item, parent, false);
         }
-        City currentCity = getItem(position);
-        CityAdapter.ViewHolder viewHolder = (CityAdapter.ViewHolder)lisItemView.getTag();
+        CitySearch currentCitySearch = getItem(position);
+        CitySearchAdapter.ViewHolder viewHolder = (CitySearchAdapter.ViewHolder)lisItemView.getTag();
 
         if (viewHolder==null){
-            viewHolder = new CityAdapter.ViewHolder();
+            viewHolder = new CitySearchAdapter.ViewHolder();
             viewHolder.txCity = (TextView) lisItemView.findViewById(R.id.tx_city_search);
             viewHolder.txGovernorate = (TextView) lisItemView.findViewById(R.id.tx_governorate);
             lisItemView.setTag(viewHolder);
         }
 
-        viewHolder.txCity.setText(currentCity.getCity());
-        viewHolder.txGovernorate.setText(currentCity.getGovernorate());
+        viewHolder.txCity.setText(currentCitySearch.getCity());
+        viewHolder.txGovernorate.setText(currentCitySearch.getGovernorate());
 
 
 

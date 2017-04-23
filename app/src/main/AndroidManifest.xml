@@ -24,8 +24,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.LoginActivity"
-            android:theme="@style/LoginTheme"
             android:launchMode="singleTop"
+            android:theme="@style/LoginTheme"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,8 +35,8 @@
         </activity>
         <activity
             android:name=".activities.RegisterActivity"
-            android:theme="@style/LoginTheme"
             android:launchMode="singleTop"
+            android:theme="@style/LoginTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.MainActivity"
@@ -46,16 +46,20 @@
             android:name=".activities.HallActivity"
             android:label=""
             android:theme="@style/Base.Theme.DesignDemo" />
-        <activity android:name=".activities.SearchActivity"
-            android:theme="@style/Base.Theme.DesignDemo"
-            android:label=""/>
+        <activity
+            android:name=".activities.SearchActivity"
+            android:label=""
+            android:theme="@style/Base.Theme.DesignDemo" />
         <activity
             android:name=".activities.HomeActivity"
             android:label=""
             android:theme="@style/Base.Theme.DesignDemo" />
-        <activity android:name=".activities.ReviewActivity"
-            android:label="التقييم"
-            android:exported="true"></activity>
+        <activity
+            android:name=".activities.ReviewActivity"
+            android:exported="true"
+            android:label="التقييم" />
+        <activity android:name=".activities.CitiesActivity"
+            android:theme="@style/Base.Theme.DesignDemo"></activity>
     </application>
 
 </manifest>
