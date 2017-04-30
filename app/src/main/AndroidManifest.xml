@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.line360.loginprojectah"
+    package="com.kywline.far7a"
     android:versionCode="1"
     android:versionName="1.0">
 
@@ -27,11 +27,6 @@
             android:launchMode="singleTop"
             android:theme="@style/LoginTheme"
             android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.RegisterActivity"
@@ -58,8 +53,16 @@
             android:name=".activities.ReviewActivity"
             android:exported="true"
             android:label="التقييم" />
-        <activity android:name=".activities.CitiesActivity"
-            android:theme="@style/Base.Theme.DesignDemo"></activity>
+        <activity
+            android:name=".activities.CitiesActivity"
+            android:theme="@style/Base.Theme.DesignDemo" />
+        <activity android:name=".activities.SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

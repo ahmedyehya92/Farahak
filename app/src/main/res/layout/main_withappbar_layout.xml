@@ -36,7 +36,7 @@
         android:divider="@null"
         android:dividerHeight="0dp"
         android:background="@color/listView_background"
-        tools:context="com.line360.loginprojectah.activities.MainActivity">
+        tools:context="com.kywline.far7a.activities.MainActivity">
 
     </ListView>
     <LinearLayout
@@ -58,17 +58,26 @@
 
     <LinearLayout
         android:id="@+id/load_layout"
+        android:orientation="vertical"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/listView_background"
+        android:background="@color/loadLayout_background"
         android:gravity="center"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
         <ProgressBar
             android:id="@+id/progBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
 
             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="يتم التحميل الآن..."
+            android:textColor="@color/listView_background"/>
     </LinearLayout>
 </RelativeLayout>

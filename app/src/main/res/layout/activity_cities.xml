@@ -5,7 +5,7 @@
     android:id="@+id/activity_cities"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.line360.loginprojectah.activities.CitiesActivity">
+    tools:context="com.kywline.far7a.activities.CitiesActivity">
 
 
     <android.support.v7.widget.Toolbar
@@ -17,8 +17,37 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+
+
+
+
     <include
         android:id="@+id/list_cities_layout"
         layout="@layout/cities_list"
         />
+
+    <LinearLayout
+        android:id="@+id/load_layout_cities"
+        android:orientation="vertical"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/loadLayout_background"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+        <ProgressBar
+            android:id="@+id/progBar_cities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="يتم التحميل الآن..."
+            android:textColor="@color/listView_background"/>
+    </LinearLayout>
 </RelativeLayout>

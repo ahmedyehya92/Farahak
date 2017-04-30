@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "325864871808",
+    "project_id": "firebase-far7a"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325864871808:android:1e93c5d8d1e88120",
+        "android_client_info": {
+          "package_name": "com.kywline.far7a"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325864871808-8fnqrck63r81hfoivok8joh3k0ahg1fu.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "325864871808-at2n4obdq3jg32t6le6h5f9v0vtc6ijf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kywline.far7a",
+            "certificate_hash": "ef0451da5e4fd972dc3d15a2974c0f1eb6802d06"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDq3kAalwZfs9_EngUdUky0EWVFpfFgGco"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
