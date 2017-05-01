@@ -2,10 +2,14 @@ package com.kywline.far7a.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.kywline.far7a.R;
 
 public class SplashScreen extends Activity {
@@ -15,6 +19,11 @@ public class SplashScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        ImageView background = (ImageView)findViewById(R.id.background);
+
+        Bitmap backgbit = BitmapFactory.decodeResource(getResources(), R.drawable.splash3);
+        background.setImageBitmap(backgbit);
+       //Glide.with(this).fromFile(getResources().R.drawable.splash3 )
         new Handler().postDelayed(new Runnable() {
 
             /*

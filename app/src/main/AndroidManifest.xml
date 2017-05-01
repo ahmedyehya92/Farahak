@@ -56,7 +56,9 @@
         <activity
             android:name=".activities.CitiesActivity"
             android:theme="@style/Base.Theme.DesignDemo" />
-        <activity android:name=".activities.SplashScreen">
+        <activity android:name=".activities.SplashScreen"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
