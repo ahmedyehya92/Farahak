@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
@@ -20,12 +21,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kywline.far7a.R;
 import com.kywline.far7a.app.AppConfig;
@@ -58,7 +62,19 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity  {
+    private static boolean asyncTaskStatus;
+    // Variables for scroll listener
+    int mVisibleThreshold = 5;
+    int mCurrentPage = 0;
+    int mPreviousTotal = 0;
+    boolean mLoading = true;
+    boolean mLastPage = false;
+    boolean userScrolled = false;
+    Integer page = 1;
+    private static RelativeLayout loadBar;
+    private static JSONArray jsonArray;
     private DrawerLayout mDrawerLayout;
+    ListView listview;
     private TextView txtName;
     private TextView txtEmail;
     private ImageView imageView;
@@ -79,8 +95,8 @@ public class MainActivity extends AppCompatActivity  {
     ProgressBar mprogressBar;
     private static String apiKey;
     private static String cityEntry;
-
-
+    private static JSONObject hall;
+    private static boolean lastItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,8 +115,10 @@ public class MainActivity extends AppCompatActivity  {
 
         context = this;
         mHalls = new ArrayList<Hall>();
-        ListView listview = (ListView) findViewById(R.id.list);
+        listview = (ListView) findViewById(R.id.list);
         loadLayout = (LinearLayout) findViewById(R.id.load_layout);
+        loadBar = (RelativeLayout) findViewById(R.id.loading_bar);
+        loadBar.setVisibility(View.GONE);
         loadLayout.setVisibility(View.VISIBLE);
         mprogressBar = (ProgressBar) findViewById(R.id.progBar);
         if (mprogressBar != null) {
@@ -161,7 +179,7 @@ public class MainActivity extends AppCompatActivity  {
 
 
         }
-
+        implementScrollListener();
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -341,7 +359,7 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onStart() {
-
+    lastItem = false;
    /*     if ((mHalls.size()==MhallsSize.getmArraylistSize())&& MhallsSize.getmArraylistSize()!=0)
         {}
         else {
@@ -447,7 +465,7 @@ public class MainActivity extends AppCompatActivity  {
 
         @Override
         protected void onPreExecute() {
-            //before works
+            asyncTaskStatus = false;
         }
 
         @Override
@@ -493,6 +511,7 @@ public class MainActivity extends AppCompatActivity  {
                     if (status == 1)
                     {
                         parames.add(new BasicNameValuePair("govid", cityEntry));
+                        parames.add(new BasicNameValuePair("page", page.toString()));
                     }
 
                     else {
@@ -546,14 +565,45 @@ public class MainActivity extends AppCompatActivity  {
                 JSONObject jsonObject = new JSONObject(progress[0]);
              //   JSONObject error = jsonObject.getJSONObject("error");
                 Boolean error = jsonObject.getBoolean("error");
-                JSONArray jsonArray = jsonObject.getJSONArray("halls");
-                for (int i=0;i<jsonArray.length();i++) {
-                    JSONObject hall = jsonArray.getJSONObject(i);
-                    mHalls.add(i,new Hall(hall.getInt("id"),hall.getString("name"),hall.getInt("price"),hall.getString("phone"),hall.getString("facebook"),hall.getString("instagram"),hall.getString("twitter"),hall.getString("preparing"),hall.getString("image1"),hall.getString("image2"),hall.getString("image3"),hall.getString("address"),hall.getInt("see")));
-
+                jsonArray = jsonObject.getJSONArray("halls");
+                if (jsonArray.length()==0)
+                {
+                    lastItem = true;
                 }
+                int index;
+                int jsonarray;
+            /*  if (page > 1)
+                {
+                    index = mHalls.size()+1;
+                    jsonarray = jsonArray.length()+1;
+                }
+                else
+                {
+                    index=0;
+                    jsonarray= jsonArray.length();
+                }*/
+         //       if (index==0) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
 
+                        hall = jsonArray.getJSONObject(i);
+                        mHalls.add(new Hall(hall.getInt("id"), hall.getString("name"), hall.getInt("price"), hall.getString("phone"), hall.getString("facebook"), hall.getString("instagram"), hall.getString("twitter"), hall.getString("preparing"), hall.getString("image1"), hall.getString("image2"), hall.getString("image3"), hall.getString("address"), hall.getInt("see")));
 
+                    }
+                    loadLayout.setVisibility(View.GONE);
+             //   }
+          /*      else if (index>0)
+                {
+                    hall=null;
+                    for (int i = index; i < index+10 ; i++) {
+
+                        for (int l = 0; l < jsonArray.length(); l++) {
+                            hall = jsonArray.getJSONObject(l);
+                        }
+                        mHalls.add(i, new Hall(hall.getInt("id"), hall.getString("name"), hall.getInt("price"), hall.getString("phone"), hall.getString("facebook"), hall.getString("instagram"), hall.getString("twitter"), hall.getString("preparing"), hall.getString("image1"), hall.getString("image2"), hall.getString("image3"), hall.getString("address"), hall.getInt("see")));
+
+                    }
+
+                }*/
 
          /*       JSONArray jsonArray = new JSONArray(progress[0]);
                 for (int i=0;i<jsonArray.length();i++) {
@@ -565,6 +615,7 @@ public class MainActivity extends AppCompatActivity  {
 
                 MhallsSize.setmArraylistSize(mHalls.size());
 
+
                 runOnUiThread(new Runnable() {
                     public void run() {
                         //Do something on UiThread
@@ -572,17 +623,23 @@ public class MainActivity extends AppCompatActivity  {
                     }
                 });
 
-                MainActivity.this.runOnUiThread(new Runnable() {
 
-                    @Override
-                    public void run() {
-                        // your stuff to update the UI
-                        Adapter.notifyDataSetChanged();
-                    }
-                });
+                    MainActivity.this.runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            // your stuff to update the UI
+                            Adapter.notifyDataSetChanged();
+                        }
+                    });
 
 
+                    asyncTaskStatus = true;
 
+                   if (page>1) {
+                       loadBar.setVisibility(View.GONE);
+                       scrollMyListViewToBottom(jsonArray.length());
+                   }
 
                /* JSONObject jsonObject = new JSONObject(progress[0]);
                 JSONObject query = jsonObject.getJSONObject("query");
@@ -602,13 +659,13 @@ public class MainActivity extends AppCompatActivity  {
 
 
                 Log.d("temp", mHalls.toString());
-                loadLayout.setVisibility(View.GONE);
+
 
 
             }
             catch (Exception ex) {
 
-
+            System.out.println(ex.getMessage());
             }
 
 
@@ -694,5 +751,91 @@ public class MainActivity extends AppCompatActivity  {
             Log.v(TAG,"Permission is granted");
             return true;
         }
+    }
+
+    private void implementScrollListener() {
+        listview.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView arg0, int scrollState) {
+                // If scroll state is touch scroll then set userScrolled
+                // true
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    userScrolled = true;
+
+                }
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                // Now check if userScrolled is true and also check if
+                // the item is end then update list view and set
+                // userScrolled to false
+                if (userScrolled
+                        && firstVisibleItem + visibleItemCount == totalItemCount) {
+
+                    userScrolled = false;
+                    if (asyncTaskStatus != false) {
+                        asyncTextTask.cancel(true);
+                        page++;
+                        updateListView();
+                    }
+
+                }
+            }
+        });
+    }
+
+    private void updateListView() {
+        // Show Progress Layout
+
+
+        // Handler to show refresh for a period of time you can use async task
+        // while commnunicating serve
+        asyncTextTask = new AsyncTextTask();
+        if (status == 1&&lastItem!= true) {
+            loadBar.setVisibility(View.VISIBLE);
+            asyncTextTask.execute(AppConfig.URL_GET_GOVS_HALL);
+
+        }
+
+        else {
+
+        }
+
+        Adapter.notifyDataSetChanged();// notify adapter
+
+        // Toast for task completion
+
+
+        // After adding new data hide the view.
+
+    /*    new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+
+                // Loop for 3 items
+
+                loadBar.setVisibility(View.GONE);
+
+                // asynctask
+
+
+
+            }
+        }, 5000); */
+    }
+
+    private void scrollMyListViewToBottom(final int length) {
+        listview.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                listview.setSelection(Adapter.getCount() - length);
+            }
+        });
     }
 }

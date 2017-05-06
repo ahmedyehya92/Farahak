@@ -29,7 +29,7 @@
 
     <ListView
         android:layout_below="@id/toolbar_main"
-        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:id="@+id/list"
         android:orientation="vertical"
         android:scrollbars="none"
@@ -55,6 +55,35 @@
             android:textSize="16sp"
             />
     </LinearLayout>
+
+    <RelativeLayout
+
+        android:id="@+id/loading_bar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:background="#AA000000"
+
+        >
+
+
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:id="@+id/tex_load"
+            android:layout_marginRight="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="جاري تحميل المزيد"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            />
+        <ProgressBar
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tex_load"
+            android:layout_width="10dp"
+            android:layout_height="10dp" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/load_layout"

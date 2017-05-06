@@ -8,21 +8,24 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.kywline.far7a.R;
 
 public class SplashScreen extends Activity {
-    private static int SPLASH_TIME_OUT = 6000;
+    private static int SPLASH_TIME_OUT = 3000;
+    ProgressBar mprogressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        mprogressBar = (ProgressBar) findViewById(R.id.prog_bar);
+        if (mprogressBar != null) {
+            mprogressBar.setIndeterminate(true);
+            mprogressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
 
-        ImageView background = (ImageView)findViewById(R.id.background);
-
-        Bitmap backgbit = BitmapFactory.decodeResource(getResources(), R.drawable.splash3);
-        background.setImageBitmap(backgbit);
        //Glide.with(this).fromFile(getResources().R.drawable.splash3 )
         new Handler().postDelayed(new Runnable() {
 
