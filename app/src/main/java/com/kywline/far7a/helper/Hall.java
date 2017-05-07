@@ -19,7 +19,7 @@ public class Hall {
     private String mAddress;
     private Integer mSee;
 
-    public Hall(int id, String name, int price, String phone,String facebook,String instagram,String twitter,String preparing, String urlOfImage1, String urlOfImage2,String urlOfImage3, String address, int see)
+    public Hall(int id, String name, int price, String phone,String facebook,String instagram,String twitter,String preparing, String urlOfImage1,String address, int see)
     {
         mId = id;
         mName = name;
@@ -30,8 +30,6 @@ public class Hall {
         mPreparing = preparing;
         mTwitter = twitter;
         mUrlOfImage1 = urlOfImage1;
-        mUrlOfImage2 = urlOfImage2;
-        mUrlOfImage3 = urlOfImage3;
         mAddress = address;
         mSee = see;
     }
@@ -45,8 +43,6 @@ public class Hall {
     public String getmPreparing() {return mPreparing;}
     public String getmTwitter() {return mTwitter;}
     public String getmUrlOfImage1() {return mUrlOfImage1;}
-    public String getmUrlOfImage2() {return mUrlOfImage2;}
-    public String getmUrlOfImage3() {return mUrlOfImage3;}
     public String getmAddress(){return mAddress;}
     public String getmSee() {return mSee.toString();}
 

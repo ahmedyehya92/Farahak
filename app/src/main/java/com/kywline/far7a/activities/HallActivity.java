@@ -26,7 +26,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.kywline.far7a.R;
+import com.kywline.far7a.app.AppConfig;
+import com.kywline.far7a.app.AppController;
 import com.kywline.far7a.helper.Comment_Model;
 import com.kywline.far7a.helper.Hall;
 import com.kywline.far7a.helper.ImageItem;
@@ -56,6 +63,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HallActivity extends AppCompatActivity {
     private static String TAG;
@@ -73,6 +81,7 @@ public class HallActivity extends AppCompatActivity {
     public static ExpandableTextView preparingTx;
     AsyncHallTask asyncHallTask;
     AsyncCommentTask asyncCommentTask;
+    public static String id;
     final String idKey = "idKey";
     final String idKeyGo = "idHallkey";
     LinearLayout loadLayout;
@@ -88,6 +97,8 @@ public class HallActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hall);
+        Intent idIntent = getIntent();
+        id = idIntent.getStringExtra(idKey);
         loadLayout = (LinearLayout) findViewById(R.id.load_layout_hall);
         loadLayout.setVisibility(View.VISIBLE);
         mprogressBar = (ProgressBar) findViewById(R.id.progBar);
@@ -326,8 +337,7 @@ public class HallActivity extends AppCompatActivity {
     // 1 async -----------------------------------------------------------------------------------------------------
 
     public class AsyncHallTask extends AsyncTask<String, String, List<Hall>> {
-        Intent idIntent = getIntent();
-        final String id = idIntent.getStringExtra(idKey);
+
 
         @Override
         protected void onPreExecute() {
@@ -437,7 +447,7 @@ public class HallActivity extends AppCompatActivity {
                     String twitter = hall.getString("twitter");
                     String preparing = hall.getString("preparing");
                     preparingTx.setText(preparing.toString());
-                    String image1 = hall.getString("image1");
+               /*     String image1 = hall.getString("image1");
                     Picasso.with(getApplicationContext())
                             .load(image1.toString())
                             .into(smallImage);
@@ -445,8 +455,8 @@ public class HallActivity extends AppCompatActivity {
                     String image2 = hall.getString("image2");
                     imageItems.add(1,new ImageItem(image2));
                     String image3 = hall.getString("image3");
-                    imageItems.add(2,new ImageItem(image3));
-                    runOnUiThread(new Runnable() {
+                    imageItems.add(2,new ImageItem(image3)); */
+            /*        runOnUiThread(new Runnable() {
                         public void run() {
                             //Do something on UiThread
 
@@ -460,18 +470,18 @@ public class HallActivity extends AppCompatActivity {
                             // your stuff to update the UI
                             imAdapter.notifyDataSetChanged();
                         }
-                    });
+                    }); */
                     String address = hall.getString("address");
                     addressHall.setText(address.toString());
                     String see = hall.getString("see");
                     hallSee.setText(see.toString());
                 }
 
-                loadLayout.setVisibility(View.GONE);
-                bottomNavigationView.setVisibility(View.VISIBLE);
+
 
                 String urlComment = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/comments";
 
+                getImages(id);
                 asyncCommentTask = new AsyncCommentTask();
                 asyncCommentTask.execute(urlComment);
 
@@ -777,7 +787,7 @@ public class HallActivity extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbar.setTitle(nameOhall.toString());
+                    collapsingToolbar.setTitle(nameOhall.toString()+""+"");
                     isShow = true;
                 } else if (isShow) {
                     collapsingToolbar.setTitle(" ");
@@ -786,5 +796,103 @@ public class HallActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void getImages(final String hall_id) {
+
+        // Tag used to cancel the request
+        String tag_string_req = "get_images";
+
+
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_GET_IMAGES, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean error = jsonObject.getBoolean("error");
+
+                    if (!error)
+                    {
+
+                        JSONArray jsonArray = jsonObject.getJSONArray("images");
+                        for (int i=0;i<jsonArray.length();i++) {
+                            JSONObject image = jsonArray.getJSONObject(i);
+                            imageItems.add(i,new ImageItem(image.getString("image_url")));
+                        }
+                        if (jsonArray.length() != 0) {
+                            JSONObject mainImage = jsonArray.getJSONObject(0);
+                            String smallImageV = mainImage.getString("image_url");
+                            Picasso.with(getApplicationContext())
+                                    .load(smallImageV.toString())
+                                    .into(smallImage);
+                        }
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                //Do something on UiThread
+
+                            }
+                        });
+
+                        HallActivity.this.runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // your stuff to update the UI
+                                imAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        loadLayout.setVisibility(View.GONE);
+                        bottomNavigationView.setVisibility(View.VISIBLE);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // onBackPressed();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error in Get Images " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        "لم يتم تحميل الصور حاول مرة أخرى", Toast.LENGTH_LONG).show();
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("hallid", hall_id);
+
+
+
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                headers.put("Authorization", apiKey);
+                return headers;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
+
+
 
 }

@@ -18,6 +18,9 @@ public class AppConfig {
     public static final String URL_GET_GOVES ="https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/govs";
     public static final String URL_GET_CITIES ="https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/cities";
     public static final String URL_GET_GOVS_HALL ="https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/hallsgov";
+    public static final String URL_GET_IMAGES ="https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/images";
+    public static final String URL_GET_TOP_SEEN_HALLS = "https://telegraphic-miscond.000webhostapp.com/halls_manager/v1/seen";
+
 
 
 

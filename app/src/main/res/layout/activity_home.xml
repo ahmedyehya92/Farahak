@@ -291,26 +291,53 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin">
+                android:layout_margin="@dimen/card_margin"
+                >
 
-                <LinearLayout
-                    style="@style/Widget.CardContent"
+                <RelativeLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_below="@id/div_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <com.example.playanimatedgif.GifView
+                            android:id="@+id/gif_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
 
                     <TextView
+                        android:id="@+id/title_top"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginRight="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="مرحلة النقاش"
+                        android:text="الأكثر مشاهدة"
+
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-
-                    <TextView
+                    <View
+                        android:id="@+id/div_title"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cheese_ipsum" />
+                        android:layout_height="1dp"
+                        android:layout_below="@id/title_top"
+                        android:background="@drawable/div_seen_cardview"
+                        ></View>
 
-                </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/seen_recycler_view"
+                        android:layout_below="@id/div_title"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none" />
+                </RelativeLayout>
 
             </android.support.v7.widget.CardView>
 

@@ -9,6 +9,8 @@
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
+
+
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:fitsSystemWindows="true"
@@ -28,6 +30,12 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/no_image_placeholder"
+                    android:scaleType="centerCrop"/>
 
                 <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/recycler_view"
@@ -71,7 +79,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:src="@drawable/hall" />
+                    android:src="@drawable/no_small_image" />
 
                 <TextView
                     android:id="@+id/tx_name_hall"
@@ -251,7 +259,6 @@
     <LinearLayout
         android:id="@+id/load_layout_hall"
         android:orientation="vertical"
-        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/loadLayout_background"

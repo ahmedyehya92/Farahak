@@ -58,7 +58,7 @@ Context context;
         if (!(currentHall.getmUrlOfImage1().toString() == "")){
             Picasso.with(getContext())
                     .load(currentHall.getmUrlOfImage1().toString())
-                    .placeholder(R.drawable.placeholder_large)
+                    .placeholder(R.drawable.placeholder)
                     .into(viewHolder.hallImage);
     }
 

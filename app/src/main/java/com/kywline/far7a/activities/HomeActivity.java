@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -13,6 +14,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,18 +26,38 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.kywline.far7a.GifView;
 import com.kywline.far7a.R;
+import com.kywline.far7a.app.AppConfig;
+import com.kywline.far7a.app.AppController;
+import com.kywline.far7a.helper.CityList;
+import com.kywline.far7a.helper.Comment_Model;
 import com.kywline.far7a.helper.DateSharedPref;
 import com.kywline.far7a.helper.SQLiteHandler;
+import com.kywline.far7a.helper.SeenRecyclerViewAdabter;
 import com.kywline.far7a.helper.SessionManager;
+import com.kywline.far7a.helper.TopSeenModel;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class HomeActivity extends MainActivity {
     DateSharedPref dateSharedpref;
+    private static RecyclerView seenRecyclerView;
+    public static ArrayList<TopSeenModel> mSeenArrayList;
+    SeenRecyclerViewAdabter seenAdapter;
     private TextView txtTimerDay, txtTimerHour, txtTimerMinute, txtTimerSecond;
     private Handler handler;
     private Runnable runnable;
@@ -45,6 +69,8 @@ public class HomeActivity extends MainActivity {
     private int month;
     private int day;
     private SQLiteHandler db;
+    private static String apiKey;
+    GifView gifView;
     private SessionManager session;
     static final int DATE_DIALOG_ID = 999;
 
@@ -53,7 +79,7 @@ public class HomeActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        gifView = (GifView) findViewById(R.id.gif_view);
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
 
@@ -69,7 +95,7 @@ public class HomeActivity extends MainActivity {
         HashMap<String, String> user = db.getUserDetails();
 
         String name = user.get("name");
-
+        apiKey = user.get("uid");
 
 
 
@@ -87,6 +113,15 @@ public class HomeActivity extends MainActivity {
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle("");
         loadBackdrop();
+
+        initTopSeenViews();
+        mSeenArrayList = new ArrayList<TopSeenModel>();
+        seenAdapter = new SeenRecyclerViewAdabter(HomeActivity.this, mSeenArrayList);
+        seenRecyclerView.setAdapter(seenAdapter);
+        seenAdapter.notifyDataSetChanged();
+
+        getTopSeenHalls();
+        seenRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
 
         dateSharedpref = new DateSharedPref(this);
         txtTimerDay = (TextView) findViewById(R.id.tx_days);
@@ -156,7 +191,13 @@ public class HomeActivity extends MainActivity {
 
     }
 
+    private void initTopSeenViews() {
+        seenRecyclerView = (RecyclerView) findViewById(R.id.seen_recycler_view);
+        seenRecyclerView.setHasFixedSize(true);
+        seenRecyclerView
+                .setLayoutManager(new LinearLayoutManager(HomeActivity.this, LinearLayoutManager.HORIZONTAL, false));
 
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -355,5 +396,98 @@ public class HomeActivity extends MainActivity {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
         Glide.with(this).load("http://i.imgur.com/Gd7S8GT.jpg").centerCrop().into(imageView);
     }
+
+
+
+
+    private void getTopSeenHalls() {
+        // Tag used to cancel the request
+
+
+
+        String tag_string_req = "req_get_top_seen";
+
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_GET_TOP_SEEN_HALLS, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        // User successfully stored in MySQL
+                        // Now store the user in sqlite
+                        JSONArray jsonArray = jObj.getJSONArray("halls");
+                        for (int i=0;i<jsonArray.length();i++) {
+                            JSONObject hall = jsonArray.getJSONObject(i);
+                            mSeenArrayList.add(i,new TopSeenModel(hall.getString("id"),hall.getString("name"),hall.getString("price"),hall.getString("image"),hall.getString("address"),hall.getString("see")));
+
+                        }
+
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                //Do something on UiThread
+
+                            }
+                        });
+
+                        HomeActivity.this.runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // your stuff to update the UI
+                                seenAdapter.notifyDataSetChanged();
+                            }
+                        });
+
+
+                        // Launch login activity
+                    } else {
+
+                        // Error occurred in registration. Get the error
+                        // message
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("seen", "a");
+
+
+                return params;
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                headers.put("Authorization", apiKey);
+                return headers;
+            }
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
 
 }

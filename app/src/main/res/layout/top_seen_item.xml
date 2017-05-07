@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginBottom="10dp"
+    xmlns:tools="http://schemas.android.com/tools">
+<RelativeLayout
+    android:layout_width="150dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/seen_image"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        tools:src="@drawable/hall"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:id="@+id/seen_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="قاعة سيدي القاضي تمبولا الاقرع ميعرفش اخوه"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_below="@id/seen_image"/>
+    <TextView
+        android:id="@+id/seen_address"
+        tools:text="المنيا"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seen_name"/>
+
+    <TextView
+        tools:text="5000جنيه"
+        android:id="@+id/seen_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seen_address" />
+
+
+        <TextView
+            android:id="@+id/seen_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="50مشاهدة"
+            android:layout_below="@id/seen_price"
+            />
+</RelativeLayout>
+</android.support.v7.widget.CardView>

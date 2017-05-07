@@ -188,8 +188,6 @@ public class MainActivity extends AppCompatActivity  {
                 final String facebook_key = "fkey";
                 final String phone_key = "phonekey";
                 final String image1_key = "image1key";
-                final String image2_key = "image2key";
-                final String image3_key = "image3key";
                 final String preparing_key = "preparingkey";
                 final String name_key = "namekey";
                 final String price_key = "pricekey";
@@ -198,17 +196,11 @@ public class MainActivity extends AppCompatActivity  {
                 String name = hall.getmName();
                 String price = hall.getmPrice();
                 String address = hall.getmAddress();
-                String image1 = hall.getmUrlOfImage1();
-                String image2 = hall.getmUrlOfImage2();
-                String image3 = hall.getmUrlOfImage3();
                 String facebook = hall.getmFacebook();
                 String phone = hall.getmPhone();
                 String preparing = hall.getmPreparing();
                 Intent myIntent = new Intent(view.getContext(), HallActivity.class);
                 myIntent.putExtra(id_key,idHall);
-                myIntent.putExtra(image1_key,image1);
-                myIntent.putExtra(image2_key,image2);
-                myIntent.putExtra(image3_key,image3);
                 myIntent.putExtra(facebook_key,facebook);
                 myIntent.putExtra(phone_key,phone);
                 myIntent.putExtra(preparing_key,preparing);
@@ -586,7 +578,7 @@ public class MainActivity extends AppCompatActivity  {
                     for (int i = 0; i < jsonArray.length(); i++) {
 
                         hall = jsonArray.getJSONObject(i);
-                        mHalls.add(new Hall(hall.getInt("id"), hall.getString("name"), hall.getInt("price"), hall.getString("phone"), hall.getString("facebook"), hall.getString("instagram"), hall.getString("twitter"), hall.getString("preparing"), hall.getString("image1"), hall.getString("image2"), hall.getString("image3"), hall.getString("address"), hall.getInt("see")));
+                        mHalls.add(new Hall(hall.getInt("id"), hall.getString("name"), hall.getInt("price"), hall.getString("phone"), hall.getString("facebook"), hall.getString("instagram"), hall.getString("twitter"), hall.getString("preparing"), hall.getString("image1"), hall.getString("address"), hall.getInt("see")));
 
                     }
                     loadLayout.setVisibility(View.GONE);

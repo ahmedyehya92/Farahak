@@ -1,6 +1,8 @@
 package com.kywline.far7a.helper;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -38,10 +40,13 @@ public class RecyclerView_Adapter extends RecyclerView.Adapter<RecyclerViewImage
 
         RecyclerViewImages mainHolder = (RecyclerViewImages) holder;// holder
 
-        Picasso.with(context)
-                .load(model.getImage().toString())
-                .placeholder(R.drawable.placeholder_large)
-                .into(mainHolder.imageview);
+
+            Picasso.with(context)
+                    .load(model.getImage().toString())
+                    .placeholder(R.drawable.placeholder)
+                    .into(mainHolder.imageview);
+
+
     }
 
 

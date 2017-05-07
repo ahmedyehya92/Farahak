@@ -9,6 +9,7 @@
 
 
         <ImageView
+            android:src="@drawable/no_image_placeholder"
             android:id="@+id/image_Items"
             android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
