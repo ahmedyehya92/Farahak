@@ -12,7 +12,7 @@
     <group android:id="@+id/search_nav"
         >
         <item
-            android:id="@+id/navigation_item_attachment"
+            android:id="@+id/navigation_item_find_venues"
             android:title="@string/nav_item_attachment" />
 
     </group>

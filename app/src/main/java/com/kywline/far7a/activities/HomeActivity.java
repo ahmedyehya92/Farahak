@@ -65,6 +65,7 @@ public class HomeActivity extends MainActivity {
     private Runnable runnable;
     private TextView tvDisplayDate;
     private TextView tvDisplayName;
+    private TextView txfindVenue;
     private Button btnChangeDate;
     private DrawerLayout mDrawerLayout;
     private int year;
@@ -83,9 +84,9 @@ public class HomeActivity extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        loadTopSeen = (LinearLayout) findViewById(R.id.load_topseen);
-        loadTopSeen.setVisibility(View.VISIBLE);
+
         progressBar = (DottedProgressBar) findViewById(R.id.progress);
+        progressBar.setVisibility(View.VISIBLE);
         progressBar.startProgress();
 
         // SqLite database handler
@@ -139,12 +140,19 @@ public class HomeActivity extends MainActivity {
         txtTimerMinute = (TextView) findViewById(R.id.tx_minutes);
         txtTimerSecond = (TextView) findViewById(R.id.tx_seconds);
         tvDisplayName = (TextView) findViewById(R.id.tx_desplay_name);
-
+        txfindVenue = (TextView) findViewById(R.id.tx_find_venue);
         tvDisplayName.setText(name);
 
         addListenerOnButton();
         setCurrentDateOnView();
 
+        txfindVenue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -171,7 +179,8 @@ public class HomeActivity extends MainActivity {
                         startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_with)));
                         break;
 
-                    case R.id.navigation_item_attachment:
+                    case R.id.navigation_item_find_venues:
+
                         mDrawerLayout.closeDrawers();
                         Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
                         startActivity(intent);
@@ -439,7 +448,7 @@ public class HomeActivity extends MainActivity {
 
                         }
                         progressBar.stopProgress();
-                        loadTopSeen.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 //Do something on UiThread

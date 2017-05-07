@@ -48,9 +48,9 @@ Context context;
         }
 
         viewHolder.txName.setText(currentHall.getmName());
-        viewHolder.txSee.setText(currentHall.getmSee());
+        viewHolder.txSee.setText(currentHall.getmSee()+"/" + "مشاهدة");
 
-        viewHolder.txPrice.setText(currentHall.getmPrice());
+        viewHolder.txPrice.setText(currentHall.getmPrice() + "/" + "جنيه");
         viewHolder.txAddress.setText(currentHall.getmAddress());
 
 

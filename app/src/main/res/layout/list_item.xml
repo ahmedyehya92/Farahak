@@ -58,7 +58,8 @@
                 android:gravity="center"
                 android:layout_below="@id/tx_address"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dp">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -101,18 +102,9 @@
             android:textSize="16sp"
             tools:text="2000"
             android:textColor="@color/white"
-            />
-        <com.kywline.far7a.ui.CustomTextView
-            android:id="@+id/unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="جنيه"
-
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:layout_marginRight="5dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="10dp"
+            />
     </LinearLayout>
 
 </RelativeLayout>

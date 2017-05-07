@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity  {
                         break;
 
 
-                    case R.id.navigation_item_attachment:
+                    case R.id.navigation_item_find_venues:
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
                         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
@@ -578,7 +578,7 @@ public class MainActivity extends AppCompatActivity  {
                     for (int i = 0; i < jsonArray.length(); i++) {
 
                         hall = jsonArray.getJSONObject(i);
-                        mHalls.add(new Hall(hall.getInt("id"), hall.getString("name"), hall.getInt("price"), hall.getString("phone"), hall.getString("facebook"), hall.getString("instagram"), hall.getString("twitter"), hall.getString("preparing"), hall.getString("image1"), hall.getString("address"), hall.getInt("see")));
+                        mHalls.add(new Hall(hall.getInt("id"), hall.getString("name"), hall.getInt("price"), hall.getString("phone"), hall.getString("facebook"), hall.getString("instagram"), hall.getString("youtube"), hall.getString("preparing"), hall.getString("image1"), hall.getString("address"), hall.getInt("see")));
 
                     }
                     loadLayout.setVisibility(View.GONE);
