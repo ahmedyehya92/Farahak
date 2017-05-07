@@ -68,7 +68,6 @@ import java.util.Map;
 public class HallActivity extends AppCompatActivity {
     private static String TAG;
     private LinearLayout btn_rating;
-
     private static String phone_url ;
     private static String facebook_url ;
     private static String instagram_url ;
@@ -76,7 +75,6 @@ public class HallActivity extends AppCompatActivity {
 
     private static RecyclerView imRecyclerView;
     private static RecyclerView commentRecyclerView;
-    public static final String[] USERNAME_COMMENT = {"Ahmed","Aymen","Rami","Ali"};
     public static ArrayList<Comment_Model> mComments;
     public static ArrayList<ImageItem> imageItems;
     public static final String[] DATE_COMMENT = {"12/5/2016","13/4/2017","10/2/2017","11/1/2017"};
