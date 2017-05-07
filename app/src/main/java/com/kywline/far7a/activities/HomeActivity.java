@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -43,6 +44,7 @@ import com.kywline.far7a.helper.SQLiteHandler;
 import com.kywline.far7a.helper.SeenRecyclerViewAdabter;
 import com.kywline.far7a.helper.SessionManager;
 import com.kywline.far7a.helper.TopSeenModel;
+import com.trncic.library.DottedProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,16 +72,22 @@ public class HomeActivity extends MainActivity {
     private int day;
     private SQLiteHandler db;
     private static String apiKey;
-    GifView gifView;
+    private static DottedProgressBar progressBar;
     private SessionManager session;
     static final int DATE_DIALOG_ID = 999;
+    LinearLayout loadTopSeen;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        gifView = (GifView) findViewById(R.id.gif_view);
+
+        loadTopSeen = (LinearLayout) findViewById(R.id.load_topseen);
+        loadTopSeen.setVisibility(View.VISIBLE);
+        progressBar = (DottedProgressBar) findViewById(R.id.progress);
+        progressBar.startProgress();
+
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
 
@@ -119,6 +127,8 @@ public class HomeActivity extends MainActivity {
         seenAdapter = new SeenRecyclerViewAdabter(HomeActivity.this, mSeenArrayList);
         seenRecyclerView.setAdapter(seenAdapter);
         seenAdapter.notifyDataSetChanged();
+
+
 
         getTopSeenHalls();
         seenRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
@@ -428,7 +438,8 @@ public class HomeActivity extends MainActivity {
                             mSeenArrayList.add(i,new TopSeenModel(hall.getString("id"),hall.getString("name"),hall.getString("price"),hall.getString("image"),hall.getString("address"),hall.getString("see")));
 
                         }
-
+                        progressBar.stopProgress();
+                        loadTopSeen.setVisibility(View.GONE);
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 //Do something on UiThread

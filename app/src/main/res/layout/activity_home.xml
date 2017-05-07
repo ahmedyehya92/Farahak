@@ -300,13 +300,22 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:layout_below="@id/div_title"
+                        android:id="@+id/load_topseen"
+                        android:layout_below="@+id/div_title"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <com.example.playanimatedgif.GifView
-                            android:id="@+id/gif_view"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:gravity="center">
+                        <com.trncic.library.DottedProgressBar
+                            android:id="@+id/progress"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="0dp"
+                            android:padding="30dp"
+                            app:activeDot="@drawable/active_dot"
+                            app:dotSize="29dp"
+                            app:inactiveDot="@drawable/inactive_dot"
+                            app:jumpingSpeed="670"
+                            app:spacing="15dp" />
                     </LinearLayout>
 
                     <TextView

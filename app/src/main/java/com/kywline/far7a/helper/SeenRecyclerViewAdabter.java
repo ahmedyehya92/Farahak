@@ -65,7 +65,7 @@ public class SeenRecyclerViewAdabter extends
 
         ViewGroup mainGroup = (ViewGroup) mInflater.inflate(
                 R.layout.top_seen_item, viewGroup, false);
-        SeenRecyclerViewHolder listHolder = new SeenRecyclerViewHolder(mainGroup);
+        SeenRecyclerViewHolder listHolder = new SeenRecyclerViewHolder(mainGroup,context,arrayList);
         return listHolder;
 
     }

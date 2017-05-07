@@ -68,6 +68,12 @@ import java.util.Map;
 public class HallActivity extends AppCompatActivity {
     private static String TAG;
     private LinearLayout btn_rating;
+
+    private static String phone_url ;
+    private static String facebook_url ;
+    private static String instagram_url ;
+    private static String youtube_url ;
+
     private static RecyclerView imRecyclerView;
     private static RecyclerView commentRecyclerView;
     public static final String[] USERNAME_COMMENT = {"Ahmed","Aymen","Rami","Ali"};
@@ -214,20 +220,20 @@ public class HallActivity extends AppCompatActivity {
                                 final String phone_key = "phonekey";
                                 Intent intent = getIntent();
                                 String phone = intent.getStringExtra(phone_key);
-                                Intent callintent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +phone));
+                                Intent callintent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +phone_url));
 
                                 boolean result = isPhoneCallPermissionGranted();
 
                                 try {
                                     startActivity(callintent);
                                     Toast toast = Toast.makeText(getApplication(),
-                                            "Calling",
+                                            "جاري الإتصال",
                                             Toast.LENGTH_SHORT);
                                     toast.show();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Toast toast = Toast.makeText(getApplication(),
-                                            "Call Failed",
+                                            "الرجاء السماح بإجراء المكالمات",
                                             Toast.LENGTH_SHORT);
                                     toast.show();
                                 }
@@ -238,7 +244,19 @@ public class HallActivity extends AppCompatActivity {
                                 Intent fintent = getIntent();
                                 String username = fintent.getStringExtra(facebook_key);
                                 try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com/" + username)));
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com/" + facebook_url)));
+                                } catch (Exception e) {
+                                }
+                                break;
+                            case R.id.action_youtybe:
+                                try {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/" + youtube_url)));
+                                } catch (Exception e) {
+                                }
+                                break;
+                            case R.id.action_instagram:
+                                try {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.instagram.com/" + instagram_url)));
                                 } catch (Exception e) {
                                 }
                                 break;
@@ -441,10 +459,10 @@ public class HallActivity extends AppCompatActivity {
                     nameHall.setText(nameOhall.toString());
                     String price = hall.getString("price");
                     priceHall.setText(price.toString());
-                    String phone = hall.getString("phone");
-                    String facebook = hall.getString("facebook");
-                    String instagram = hall.getString("instagram");
-                    String twitter = hall.getString("twitter");
+                    phone_url = hall.getString("phone");
+                    facebook_url = hall.getString("facebook");
+                    instagram_url = hall.getString("instagram");
+                    youtube_url = hall.getString("youtube");
                     String preparing = hall.getString("preparing");
                     preparingTx.setText(preparing.toString());
                /*     String image1 = hall.getString("image1");
