@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity  {
         loadLayout = (LinearLayout) findViewById(R.id.load_layout);
         loadBar = (RelativeLayout) findViewById(R.id.loading_bar);
         loadBar.setVisibility(View.GONE);
-        loadLayout.setVisibility(View.VISIBLE);
+    //    loadLayout.setVisibility(View.VISIBLE);
         mprogressBar = (ProgressBar) findViewById(R.id.progBar);
         if (mprogressBar != null) {
             mprogressBar.setIndeterminate(true);
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity  {
            }
           else {
                // Toast.makeText(MainActivity.this,"خطأ في الإتصال حاول مرة أخرى",Toast.LENGTH_SHORT).show();
-                loadLayout.setVisibility(View.GONE);
+             //   loadLayout.setVisibility(View.GONE);
                 snacBar1.setVisibility(View.VISIBLE);
             }
 
@@ -580,8 +580,24 @@ public class MainActivity extends AppCompatActivity  {
                         hall = jsonArray.getJSONObject(i);
                         mHalls.add(new Hall(hall.getInt("id"), hall.getString("name"), hall.getInt("price"), hall.getString("phone"), hall.getString("facebook"), hall.getString("instagram"), hall.getString("youtube"), hall.getString("preparing"), hall.getString("image1"), hall.getString("address"), hall.getInt("see")));
 
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                //Do something on UiThread
+
+                            }
+                        });
+
+
+                        MainActivity.this.runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // your stuff to update the UI
+                                Adapter.notifyDataSetChanged();
+                            }
+                        });
                     }
-                    loadLayout.setVisibility(View.GONE);
+                //    loadLayout.setVisibility(View.GONE);
              //   }
           /*      else if (index>0)
                 {
@@ -608,22 +624,7 @@ public class MainActivity extends AppCompatActivity  {
                 MhallsSize.setmArraylistSize(mHalls.size());
 
 
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        //Do something on UiThread
 
-                    }
-                });
-
-
-                    MainActivity.this.runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            // your stuff to update the UI
-                            Adapter.notifyDataSetChanged();
-                        }
-                    });
 
 
                     asyncTaskStatus = true;

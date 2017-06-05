@@ -72,14 +72,10 @@ public class HallActivity extends AppCompatActivity {
     private static String facebook_url ;
     private static String instagram_url ;
     private static String youtube_url ;
-
     private static RecyclerView imRecyclerView;
     private static RecyclerView commentRecyclerView;
     public static ArrayList<Comment_Model> mComments;
     public static ArrayList<ImageItem> imageItems;
-    public static final String[] DATE_COMMENT = {"12/5/2016","13/4/2017","10/2/2017","11/1/2017"};
-    public static final String[] COMMENT = {"قاعة جميلة وأسعارهم مناسبة والخدمة فوق الممتاز","قاعة فخمة والخدمة جيدة","ممتازة","قاعة متميزة جدا وتصميمها هايل أنحكم بيها"};
-    public static final String[] RATE = {"3.5","5","4","5"};
     ImageView smallImage;
     public static TextView nameHall,priceHall,addressHall, hallSee;
     public static ExpandableTextView preparingTx;
@@ -222,18 +218,25 @@ public class HallActivity extends AppCompatActivity {
 
                                 boolean result = isPhoneCallPermissionGranted();
 
-                                try {
-                                    startActivity(callintent);
-                                    Toast toast = Toast.makeText(getApplication(),
-                                            "جاري الإتصال",
-                                            Toast.LENGTH_SHORT);
-                                    toast.show();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    Toast toast = Toast.makeText(getApplication(),
-                                            "الرجاء السماح بإجراء المكالمات",
-                                            Toast.LENGTH_SHORT);
-                                    toast.show();
+                                if (result==true) {
+                                    try {
+                                        startActivity(callintent);
+                                        Toast toast = Toast.makeText(getApplication(),
+                                                "جاري الإتصال",
+                                                Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Toast toast = Toast.makeText(getApplication(),
+                                                "الرجاء السماح بإجراء المكالمات",
+                                                Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    }
+                                }
+
+                                else
+                                {
+                                    boolean resultE = isPhoneCallPermissionGranted();
                                 }
                                 break;
 

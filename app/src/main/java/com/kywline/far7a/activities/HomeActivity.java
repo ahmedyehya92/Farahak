@@ -21,6 +21,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -77,6 +80,7 @@ public class HomeActivity extends MainActivity {
     private SessionManager session;
     static final int DATE_DIALOG_ID = 999;
     LinearLayout loadTopSeen;
+    private Animation animShow, animHide;
 
 
     @Override
@@ -84,9 +88,12 @@ public class HomeActivity extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        animShow = AnimationUtils.loadAnimation( this, R.anim.view_show);
+        animHide = AnimationUtils.loadAnimation( this, R.anim.view_hide);
 
         progressBar = (DottedProgressBar) findViewById(R.id.progress);
         progressBar.setVisibility(View.VISIBLE);
+        progressBar.startAnimation(animShow);
         progressBar.startProgress();
 
         // SqLite database handler
@@ -121,7 +128,7 @@ public class HomeActivity extends MainActivity {
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle("");
-        loadBackdrop();
+      //  loadBackdrop();
 
         initTopSeenViews();
         mSeenArrayList = new ArrayList<TopSeenModel>();
@@ -215,6 +222,7 @@ public class HomeActivity extends MainActivity {
         seenRecyclerView.setHasFixedSize(true);
         seenRecyclerView
                 .setLayoutManager(new LinearLayoutManager(HomeActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        seenRecyclerView.setVisibility(View.GONE);
 
     }
 
@@ -447,8 +455,16 @@ public class HomeActivity extends MainActivity {
                             mSeenArrayList.add(i,new TopSeenModel(hall.getString("id"),hall.getString("name"),hall.getString("price"),hall.getString("image"),hall.getString("address"),hall.getString("see")));
 
                         }
+
+                        int jarray = jsonArray.length();
+                        System.out.println(jarray);
                         progressBar.stopProgress();
+                   //     slideToBottom(progressBar);
                         progressBar.setVisibility(View.GONE);
+                        progressBar.startAnimation(animHide);
+                        seenRecyclerView.setVisibility(View.VISIBLE);
+                        seenRecyclerView.startAnimation(animShow);
+
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 //Do something on UiThread
@@ -509,5 +525,12 @@ public class HomeActivity extends MainActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
+    public void slideToBottom(View view){
+        TranslateAnimation animate = new TranslateAnimation(0,0,0,view.getHeight());
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+        view.setVisibility(View.GONE);
+    }
 
 }

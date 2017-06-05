@@ -69,7 +69,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             mprogressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
 
-        getGovs("a");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
@@ -96,6 +96,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
 
         mSearchView.animate();
 
+        getGovs("a");
         govListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

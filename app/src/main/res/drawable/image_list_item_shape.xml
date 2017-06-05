@@ -5,9 +5,6 @@
     android:tintMode="multiply">
     <gradient
         android:startColor="@color/black"
-
-
-
         android:angle="90"
         ></gradient>
 

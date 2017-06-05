@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/card_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/title_top"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="الأكثر مشاهدة"
+
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <View
+            android:id="@+id/div_title"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/title_top"
+            android:background="@drawable/div_seen_cardview"
+            android:layout_marginBottom="10dp"
+            ></View>
+
+        <RelativeLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/div_title">
+
+            <com.trncic.library.DottedProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="40dp"
+                app:activeDot="@drawable/active_dot"
+                app:dotSize="29dp"
+                app:inactiveDot="@drawable/inactive_dot"
+                app:jumpingSpeed="1000"
+                app:spacing="15dp"
+                android:visibility="visible"/>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/seen_recycler_view"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                />
+
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/div2_title"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/content"
+            android:background="@drawable/div_seen_cardview"
+            android:layout_marginBottom="10dp"
+            ></View>
+
+        <LinearLayout
+            android:id="@+id/layout_find_venue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/div2_title"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/tx_find_venue"
+                android:layout_margin="16dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="تصفح القاعات"
+
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

@@ -1,6 +1,7 @@
 package com.kywline.far7a.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -75,9 +77,10 @@ public class LoginActivity extends Activity {
                     checkLogin(email, password);
                 } else {
                     // Prompt user to enter credentials
-                    Toast.makeText(getApplicationContext(),
-                            "Please enter the credentials!", Toast.LENGTH_LONG)
-                            .show();
+
+                    String msg = "الرجاء ادخال البيانات بشكل صحيح";
+                    showAlertDialog(msg);
+
                 }
             }
 
@@ -103,7 +106,7 @@ public class LoginActivity extends Activity {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
-        pDialog.setMessage("Logging in ...");
+        pDialog.setMessage("تسجيل الدخول ...");
 
         showDialog();
 
@@ -145,14 +148,16 @@ public class LoginActivity extends Activity {
                         finish();
                     } else {
                         // Error in login. Get the error message
-                        String errorMsg = jObj.getString("message");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                        final String errorMsg = jObj.getString("message");
+
+                        showAlertDialog(errorMsg);
                     }
                 } catch (JSONException e) {
                     // JSON error
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+
+
                 }
 
             }
@@ -161,9 +166,11 @@ public class LoginActivity extends Activity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Login Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
+                String msg = "خطأ في الإتصال برجاء المحاولة لاحقا";
+                showAlertDialog(msg);
+
+
             }
         }) {
 
@@ -191,5 +198,14 @@ public class LoginActivity extends Activity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+
+    private void showAlertDialog (String msg)
+    {
+        final Dialog dialog = new Dialog(LoginActivity.this);
+        dialog.setContentView(R.layout.alert_dialog);
+        dialog.show();
+        TextView message = (TextView)dialog.findViewById(R.id.tx_alert);
+        message.setText(msg.toString());
     }
 }

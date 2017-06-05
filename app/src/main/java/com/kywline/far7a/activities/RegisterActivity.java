@@ -1,6 +1,7 @@
 package com.kywline.far7a.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kywline.far7a.R;
@@ -77,9 +79,8 @@ public class RegisterActivity extends AppCompatActivity {
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
                     registerUser(name, email, password);
                 } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Please enter your details!", Toast.LENGTH_LONG)
-                            .show();
+                    String msg = "الرجاء اكمال البيانات أولا";
+                    showAlertDialog(msg);
                 }
             }
         });
@@ -135,7 +136,7 @@ public class RegisterActivity extends AppCompatActivity {
                         // Inserting row in users table
                         db.addUser(user_id, name, email, uid, created_at);
 
-                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "تم التسجيل بنجاح، قم بتسجيل الدخول الآن", Toast.LENGTH_LONG).show();
 
                         // Launch login activity
                         Intent intent = new Intent(
@@ -148,8 +149,7 @@ public class RegisterActivity extends AppCompatActivity {
                         // Error occurred in registration. Get the error
                         // message
                         String errorMsg = jObj.getString("message");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                        showAlertDialog(errorMsg);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -161,9 +161,9 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
+                String msg = "خطأ في الإتصال برجاء المحاولة لاحقا";
+                showAlertDialog(msg);
             }
         }) {
 
@@ -192,5 +192,14 @@ public class RegisterActivity extends AppCompatActivity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+
+    private void showAlertDialog (String msg)
+    {
+        final Dialog dialog = new Dialog(RegisterActivity.this);
+        dialog.setContentView(R.layout.alert_dialog);
+        dialog.show();
+        TextView message = (TextView)dialog.findViewById(R.id.tx_alert);
+        message.setText(msg.toString());
     }
 }

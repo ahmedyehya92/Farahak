@@ -1,48 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_splash_screen"
     android:background="#90d6e0"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.kywline.far7a.activities.SplashScreen">
 
-    <View
-        android:id="@+id/div"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@drawable/div1"
-        android:layout_marginTop="100dp"
-        ></View>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/div">
-    <View
-        android:id="@+id/link1"
-        android:layout_width="3dp"
-        android:layout_height="15dp"
-        android:background="@drawable/div1"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="120dp"
-        ></View>
-
-    <View
-        android:id="@+id/link2"
-        android:layout_width="3dp"
-        android:layout_height="15dp"
-
-        android:background="@drawable/div1"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="120dp"
-        ></View>
-    </RelativeLayout>
-
     <ImageView
         android:layout_centerHorizontal="true"
         android:layout_marginTop="75dp"
-
+        android:layout_centerInParent="true"
         android:id="@+id/background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,15 +22,19 @@
         android:id="@+id/prog_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/background"
-        android:layout_centerHorizontal="true"/>
+        android:theme="@style/Base.Theme.DesignDemo"
+        android:layout_marginTop="116dp"
+        android:layout_alignTop="@+id/background"
+        android:layout_centerHorizontal="true" />
+
 
     <RelativeLayout
-        android:layout_marginTop="20dp"
-
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="80dp"
+        android:id="@+id/text_ads"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/prog_bar"
+
         android:background="@color/white">
         <View
             android:layout_width="match_parent"
