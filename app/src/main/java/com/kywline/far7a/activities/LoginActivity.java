@@ -36,6 +36,7 @@ public class LoginActivity extends Activity {
     private ProgressDialog pDialog;
     private SessionManager session;
     private SQLiteHandler db;
+    private static Integer repeateConnection=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +118,7 @@ public class LoginActivity extends Activity {
             public void onResponse(String response) {
                 Log.d(TAG, "Login Response: " + response.toString());
                 hideDialog();
-
+                repeateConnection=0;
                 try {
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("error");
@@ -166,9 +167,22 @@ public class LoginActivity extends Activity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Login Error: " + error.getMessage());
-                hideDialog();
-                String msg = "خطأ في الإتصال برجاء المحاولة لاحقا";
-                showAlertDialog(msg);
+
+                if (repeateConnection <= 3)
+                {
+                    checkLogin(email, password);
+                    Toast.makeText(LoginActivity.this,"error",Toast.LENGTH_SHORT).show();
+                    repeateConnection++;
+                }
+                else
+                {
+                     hideDialog();
+                     String msg = "خطأ في الإتصال برجاء المحاولة لاحقا";
+                     showAlertDialog(msg);
+
+
+                }
+
 
 
             }
